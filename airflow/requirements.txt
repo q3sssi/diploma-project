@@ -1,0 +1,6 @@
+psycopg2-binary==2.9.9
+pymysql==1.1.0
+apache-airflow-providers-postgres==5.10.0
+apache-airflow-providers-mysql==5.5.0
+pandas==2.1.4
+
