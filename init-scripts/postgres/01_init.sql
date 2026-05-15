@@ -43,3 +43,46 @@ INSERT INTO orders (product_id, quantity, total_amount, order_date, region) VALU
   (5, 4, 139960.00, '2024-03-05', 'Москва'),
   (1, 1, 89999.00, '2024-03-12', 'Казань'),
   (2, 8, 43992.00, '2024-03-15', 'СПб');
+
+-- ── МЕТАДАННЫЕ КОНСОЛИДАЦИЙ ───────────────────────────────────────────────────
+-- Хранит историю всех операций объединения таблиц:
+-- что (source_table_1/2), откуда (source_schema), куда (result_view),
+-- как (join_type, join_column), когда (created_at), результат (row_count)
+
+CREATE TABLE IF NOT EXISTS consolidation_log (
+    id              SERIAL PRIMARY KEY,
+
+    -- ЧТО объединяли
+    source_table_1  VARCHAR(100) NOT NULL,   -- первая исходная таблица
+    source_table_2  VARCHAR(100) NOT NULL,   -- вторая исходная таблица
+
+    -- ОТКУДА (схема источников)
+    source_schema   VARCHAR(50)  NOT NULL DEFAULT 'public',
+
+    -- КАК объединяли
+    join_column     VARCHAR(100) NOT NULL,   -- поле JOIN
+    join_type       VARCHAR(20)  NOT NULL,   -- LEFT / INNER / FULL OUTER
+
+    -- КУДА
+    result_view     VARCHAR(100) NOT NULL,   -- имя созданного VIEW
+    result_schema   VARCHAR(50)  NOT NULL DEFAULT 'public',
+
+    -- РЕЗУЛЬТАТ
+    row_count       INTEGER,                 -- кол-во строк в итоговом VIEW
+    columns_count   INTEGER,                 -- кол-во колонок в итоговом VIEW
+    sql_text        TEXT,                    -- полный SQL VIEW (для аудита)
+
+    -- СТАТУС
+    status          VARCHAR(20)  NOT NULL DEFAULT 'success',  -- success / error
+    error_message   TEXT,                    -- текст ошибки, если status=error
+
+    -- КОГДА
+    created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
+
+    -- Superset
+    superset_status VARCHAR(100)
+);
+
+-- Индекс для быстрой выборки истории по дате и по имени результата
+CREATE INDEX IF NOT EXISTS idx_consolidation_log_created_at  ON consolidation_log (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_consolidation_log_result_view ON consolidation_log (result_view);

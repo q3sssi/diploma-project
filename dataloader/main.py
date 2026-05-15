@@ -95,9 +95,23 @@ def superset_db_id(token):
     r = requests.get(f"{SUPERSET_URL}/api/v1/database/",
         headers={"Authorization": f"Bearer {token}"}, timeout=10)
     r.raise_for_status()
-    for db in r.json().get("result", []):
-        if "postgresql" in db.get("sqlalchemy_uri","") or "trino" in db.get("sqlalchemy_uri",""):
+    databases = r.json().get("result", [])
+    
+    # Логируем что реально вернул Superset — смотри в docker logs diploma_dataloader
+    import logging
+    for db in databases:
+        logging.warning(f"Superset DB: id={db.get('id')} name={db.get('database_name')} uri={db.get('sqlalchemy_uri','—')}")
+    
+    for db in databases:
+        uri = db.get("sqlalchemy_uri", "") or ""
+        name = db.get("database_name", "") or ""
+        if "postgresql" in uri or "trino" in uri or "postgres" in name.lower():
             return db["id"]
+    
+    # Если одна БД — берём её
+    if len(databases) == 1:
+        return databases[0]["id"]
+        
     raise HTTPException(404, "Не найдено подключение PostgreSQL/Trino в Superset")
 
 def register_in_superset(token, table_name):
@@ -117,6 +131,86 @@ def get_table_columns(table_name):
     rows = cur.fetchall()
     conn.close()
     return [{"name": r[0], "type": r[1]} for r in rows]
+
+
+# ── Метаданные консолидации ───────────────────────────────────────────────────
+
+def ensure_consolidation_log():
+    """Создаём таблицу метаданных, если она ещё не существует.
+    Нужно на случай, если init-скрипт не был запущен (dev-среда)."""
+    conn = pg_connect()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS consolidation_log (
+                id              SERIAL PRIMARY KEY,
+                source_table_1  VARCHAR(100) NOT NULL,
+                source_table_2  VARCHAR(100) NOT NULL,
+                source_schema   VARCHAR(50)  NOT NULL DEFAULT 'public',
+                join_column     VARCHAR(100) NOT NULL,
+                join_type       VARCHAR(20)  NOT NULL,
+                result_view     VARCHAR(100) NOT NULL,
+                result_schema   VARCHAR(50)  NOT NULL DEFAULT 'public',
+                row_count       INTEGER,
+                columns_count   INTEGER,
+                sql_text        TEXT,
+                status          VARCHAR(20)  NOT NULL DEFAULT 'success',
+                error_message   TEXT,
+                created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
+                superset_status VARCHAR(100)
+            );
+            CREATE INDEX IF NOT EXISTS idx_consolidation_log_created_at
+                ON consolidation_log (created_at DESC);
+            CREATE INDEX IF NOT EXISTS idx_consolidation_log_result_view
+                ON consolidation_log (result_view);
+        """)
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def write_consolidation_log(
+    source_table_1: str,
+    source_table_2: str,
+    join_column: str,
+    join_type: str,
+    result_view: str,
+    row_count: int | None,
+    columns_count: int | None,
+    sql_text: str,
+    status: str = "success",
+    error_message: str | None = None,
+    superset_status: str | None = None,
+):
+    """Записывает метаданные одной операции консолидации."""
+    ensure_consolidation_log()
+    conn = pg_connect()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO consolidation_log
+                (source_table_1, source_table_2, source_schema,
+                 join_column, join_type,
+                 result_view, result_schema,
+                 row_count, columns_count, sql_text,
+                 status, error_message, superset_status)
+            VALUES
+                (%s, %s, 'public',
+                 %s, %s,
+                 %s, 'public',
+                 %s, %s, %s,
+                 %s, %s, %s)
+        """, (
+            source_table_1, source_table_2,
+            join_column, join_type,
+            result_view,
+            row_count, columns_count, sql_text,
+            status, error_message, superset_status,
+        ))
+        conn.commit()
+    finally:
+        conn.close()
+
 
 # ── API ───────────────────────────────────────────────
 
@@ -208,6 +302,8 @@ async def execute(body: dict):
     )
 
     conn = pg_connect()
+    row_count = None
+    columns_count = len(select_parts)
     try:
         cur = conn.cursor()
         cur.execute(view_sql)
@@ -216,6 +312,19 @@ async def execute(body: dict):
         row_count = cur.fetchone()[0]
     except Exception as e:
         conn.rollback()
+        # Пишем ошибку в лог метаданных перед тем, как бросить исключение
+        write_consolidation_log(
+            source_table_1=table1,
+            source_table_2=table2,
+            join_column=join_column,
+            join_type=join_type,
+            result_view=result_name,
+            row_count=None,
+            columns_count=None,
+            sql_text=view_sql,
+            status="error",
+            error_message=str(e),
+        )
         raise HTTPException(500, f"Ошибка VIEW: {e}")
     finally:
         conn.close()
@@ -228,6 +337,20 @@ async def execute(body: dict):
     except Exception as e:
         superset_ok = f"VIEW создан, Superset: {e}"
 
+    # ── Записываем метаданные успешной консолидации ──
+    write_consolidation_log(
+        source_table_1=table1,
+        source_table_2=table2,
+        join_column=join_column,
+        join_type=join_type,
+        result_view=result_name,
+        row_count=row_count,
+        columns_count=columns_count,
+        sql_text=view_sql,
+        status="success",
+        superset_status=superset_ok,
+    )
+
     return {
         "status": "ok",
         "result_view": result_name,
@@ -238,6 +361,51 @@ async def execute(body: dict):
         "superset": superset_ok,
         "superset_url": f"{SUPERSET_URL}/tablemodelview/list/",
     }
+
+
+@app.get("/api/consolidation/history")
+def consolidation_history(limit: int = 50):
+    """Возвращает историю операций консолидации из таблицы метаданных."""
+    ensure_consolidation_log()
+    conn = pg_connect()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT
+                id,
+                source_table_1,
+                source_table_2,
+                source_schema,
+                join_column,
+                join_type,
+                result_view,
+                result_schema,
+                row_count,
+                columns_count,
+                sql_text,
+                status,
+                error_message,
+                created_at,
+                superset_status
+            FROM consolidation_log
+            ORDER BY created_at DESC
+            LIMIT %s
+        """, (limit,))
+        rows = cur.fetchall()
+        cols = [d[0] for d in cur.description]
+    finally:
+        conn.close()
+
+    records = []
+    for row in rows:
+        rec = dict(zip(cols, row))
+        # datetime → ISO-строка для JSON
+        if rec.get("created_at"):
+            rec["created_at"] = rec["created_at"].isoformat()
+        records.append(rec)
+
+    return {"history": records, "total": len(records)}
+
 
 @app.post("/api/connect/database")
 async def connect_db(

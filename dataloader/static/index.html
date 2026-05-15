@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DataBridge — Консолидация данных</title>
+<title>Консолидация данных</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +30,6 @@
 
 body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
 
-/* Noise texture overlay */
 body::after {
   content: '';
   position: fixed; inset: 0; pointer-events: none; z-index: 9999;
@@ -40,7 +39,6 @@ body::after {
 
 .wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 100px; }
 
-/* Header */
 .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 52px; flex-wrap: wrap; gap: 16px; }
 .brand { display: flex; align-items: center; gap: 14px; }
 .brand-mark {
@@ -59,20 +57,19 @@ body::after {
 }
 .open-superset:hover { border-color: var(--blue); color: var(--blue2); }
 
-/* Mode switcher */
 .mode-bar {
   display: flex; background: var(--s1); border: 1px solid var(--border);
-  border-radius: 14px; padding: 5px; margin-bottom: 36px; gap: 4px;
+  border-radius: 14px; padding: 5px; margin-bottom: 36px; gap: 4px; flex-wrap: wrap;
 }
 .mode-btn {
   flex: 1; padding: 10px; border: none; background: transparent; cursor: pointer;
   border-radius: 10px; font-family: var(--sans); font-size: 13px; font-weight: 600;
   color: var(--text2); transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 7px;
+  white-space: nowrap;
 }
 .mode-btn.active { background: var(--s3); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,.4); }
 .mode-btn:hover:not(.active) { color: var(--text); }
 
-/* Wizard steps */
 .wizard { display: none; }
 .wizard.active { display: block; }
 
@@ -98,7 +95,6 @@ body::after {
 .step-label { font-size: 10px; color: var(--text3); font-family: var(--mono); text-align: center; }
 .step-label.active { color: var(--text2); }
 
-/* Cards */
 .card {
   background: var(--s1); border: 1px solid var(--border); border-radius: 16px;
   padding: 24px; margin-bottom: 16px; position: relative; overflow: hidden;
@@ -118,8 +114,8 @@ body::after {
 }
 .chip.green { background: rgba(34,197,94,.12); color: var(--green); }
 .chip.purple { background: rgba(139,92,246,.12); color: #a78bfa; }
+.chip.red { background: rgba(239,68,68,.12); color: var(--red); }
 
-/* Drop zones */
 .drops { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
 .drop {
   border: 2px dashed var(--border); border-radius: 12px; padding: 28px 16px; text-align: center;
@@ -140,7 +136,6 @@ body::after {
   display: flex; align-items: center; justify-content: center;
 }
 
-/* Form fields */
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
 .row.single { grid-template-columns: 1fr; }
 .row.triple { grid-template-columns: 2fr 1fr 1fr; }
@@ -154,7 +149,6 @@ input[type=text], input[type=password], select {
 input:focus, select:focus { border-color: var(--blue); }
 select option { background: var(--s2); }
 
-/* Buttons */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   padding: 12px 22px; border: none; border-radius: 10px; font-family: var(--sans);
@@ -171,7 +165,6 @@ select option { background: var(--s2); }
 }
 .btn-outline:hover { border-color: var(--blue); color: var(--blue2); }
 
-/* Analysis result */
 .analysis-box { display: none; }
 .analysis-box.show { display: block; }
 
@@ -188,7 +181,6 @@ select option { background: var(--s2); }
 .connector-line { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding-top: 28px; }
 .connector-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border2); }
 
-/* Join config */
 .join-config { background: var(--s2); border: 1px solid var(--border2); border-radius: 12px; padding: 18px; margin-top: 16px; }
 .join-title { font-size: 11px; font-weight: 700; color: var(--text2); font-family: var(--mono); margin-bottom: 14px; text-transform: uppercase; letter-spacing: .8px; }
 .join-types { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -200,7 +192,6 @@ select option { background: var(--s2); }
 .join-type-btn.active { border-color: var(--blue); color: var(--blue2); background: rgba(59,130,246,.1); }
 .join-type-btn:hover:not(.active) { border-color: var(--border2); color: var(--text); }
 
-/* SQL preview */
 .sql-box {
   background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
   padding: 14px; font-family: var(--mono); font-size: 11px; line-height: 1.7;
@@ -211,7 +202,6 @@ select option { background: var(--s2); }
 .sql-name { color: #86efac; }
 .sql-op { color: #fbbf24; }
 
-/* Result panel */
 .result-panel {
   display: none; background: var(--s1); border: 1px solid var(--border);
   border-radius: 16px; padding: 24px; margin-top: 20px;
@@ -234,7 +224,6 @@ select option { background: var(--s2); }
 }
 .result-link:hover { background: linear-gradient(135deg, rgba(59,130,246,.25), rgba(139,92,246,.25)); }
 
-/* Tables list */
 .tlist { display: grid; gap: 6px; }
 .tlist-item {
   display: flex; align-items: center; justify-content: space-between;
@@ -244,7 +233,61 @@ select option { background: var(--s2); }
 .tlist-name { color: var(--text); display: flex; align-items: center; gap: 8px; }
 .tlist-size { color: var(--text3); }
 
-/* Spinner */
+/* ── История консолидаций ── */
+.history-list { display: grid; gap: 10px; }
+
+.history-item {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px; cursor: pointer; transition: border-color .2s;
+}
+.history-item:hover { border-color: var(--border2); }
+.history-item.status-error { border-left: 3px solid var(--red); }
+.history-item.status-success { border-left: 3px solid var(--green); }
+
+.history-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 10px; flex-wrap: wrap;
+}
+.history-view {
+  font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text);
+}
+.history-meta {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 8px;
+}
+.history-when {
+  font-family: var(--mono); font-size: 10px; color: var(--text3);
+}
+.history-flow {
+  font-family: var(--mono); font-size: 11px; color: var(--text2);
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 6px;
+}
+.history-tbl {
+  background: var(--s2); border: 1px solid var(--border); border-radius: 6px;
+  padding: 2px 8px; font-size: 11px;
+}
+.history-arrow { color: var(--text3); font-size: 14px; }
+
+.history-detail {
+  display: none; margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.history-detail.open { display: block; }
+.history-detail-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px; margin-bottom: 12px;
+}
+.detail-cell {
+  background: var(--s1); border: 1px solid var(--border); border-radius: 8px; padding: 10px;
+}
+.detail-cell-label { font-size: 9px; color: var(--text3); font-family: var(--mono); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px; }
+.detail-cell-val { font-size: 12px; color: var(--text); font-family: var(--mono); word-break: break-all; }
+
+.history-sql {
+  background: var(--s1); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px; font-family: var(--mono); font-size: 10px; line-height: 1.7;
+  color: #7dd3fc; white-space: pre-wrap; max-height: 180px; overflow-y: auto;
+}
+
 .spin { width: 15px; height: 15px; border: 2px solid rgba(255,255,255,.2); border-top-color: #fff; border-radius: 50%; animation: rot .6s linear infinite; display: none; }
 @keyframes rot { to { transform: rotate(360deg); } }
 .loading .spin { display: inline-block; }
@@ -264,21 +307,15 @@ select option { background: var(--s2); }
 <div class="wrap">
 
   <header class="header">
-    <div class="brand">
-      <div class="brand-mark">⬡</div>
-      <div>
-        <div class="brand-name">Data<em>Bridge</em></div>
-        <div class="brand-sub">консолидация данных</div>
-      </div>
-    </div>
-    <a href="http://localhost:8088" target="_blank" class="open-superset">↗ Открыть Superset</a>
+    <a href="http://localhost:8088" target="_blank" class="open-superset">Открыть Superset</a>
   </header>
 
   <div class="mode-bar">
-    <button class="mode-btn active" onclick="setMode('consolidate')">🔗 Консолидация двух источников</button>
-    <button class="mode-btn" onclick="setMode('single')">📄 Загрузить один файл</button>
-    <button class="mode-btn" onclick="setMode('database')">🗄 Подключить БД</button>
-    <button class="mode-btn" onclick="setMode('tables')">📊 Мои таблицы</button>
+    <button class="mode-btn active" onclick="setMode('consolidate')">Консолидация двух источников</button>
+    <button class="mode-btn" onclick="setMode('single')">Загрузить один файл</button>
+    <button class="mode-btn" onclick="setMode('database')">Подключить БД</button>
+    <button class="mode-btn" onclick="setMode('tables')">Мои таблицы</button>
+    <button class="mode-btn" onclick="setMode('history')">История</button>
   </div>
 
   <!-- ═══ CONSOLIDATION WIZARD ═══ -->
@@ -307,14 +344,14 @@ select option { background: var(--s2); }
     <div id="step-upload">
       <div class="card">
         <div class="card-head">
-          <div class="card-title">📂 Загрузите два источника данных <span class="chip">Шаг 1</span></div>
+          <div class="card-title">Загрузите два источника данных <span class="chip">Шаг 1</span></div>
         </div>
 
         <div class="drops">
           <div class="drop" id="drop1" ondragover="dragOver(event,'drop1')" ondragleave="dragLeave('drop1')" ondrop="dropFile(event,'f1')">
             <div class="drop-num">1</div>
             <input type="file" id="f1" accept=".csv,.xlsx,.xls" onchange="fileChosen('f1','drop1','fn1')">
-            <div class="drop-icon">📄</div>
+            
             <div class="drop-label">Первый источник</div>
             <div class="drop-hint">CSV или Excel</div>
             <div class="drop-file" id="fn1"></div>
@@ -322,7 +359,7 @@ select option { background: var(--s2); }
           <div class="drop" id="drop2" ondragover="dragOver(event,'drop2')" ondragleave="dragLeave('drop2')" ondrop="dropFile(event,'f2')">
             <div class="drop-num">2</div>
             <input type="file" id="f2" accept=".csv,.xlsx,.xls" onchange="fileChosen('f2','drop2','fn2')">
-            <div class="drop-icon">📄</div>
+            
             <div class="drop-label">Второй источник</div>
             <div class="drop-hint">CSV или Excel</div>
             <div class="drop-file" id="fn2"></div>
@@ -342,7 +379,7 @@ select option { background: var(--s2); }
 
         <button class="btn btn-primary" id="analyze-btn" onclick="doAnalyze()">
           <div class="spin"></div>
-          <span class="btn-lbl">🔍 Загрузить и найти общие колонки</span>
+          <span class="btn-lbl">Загрузить и найти общие колонки</span>
         </button>
       </div>
     </div>
@@ -351,7 +388,7 @@ select option { background: var(--s2); }
     <div class="analysis-box" id="step-analyze">
       <div class="card">
         <div class="card-head">
-          <div class="card-title">🔍 Анализ структуры данных <span class="chip">Шаг 2</span></div>
+          <div class="card-title">Анализ структуры данных <span class="chip">Шаг 2</span></div>
           <button class="btn-outline btn" style="width:auto;padding:6px 14px;font-size:11px" onclick="resetWizard()">← Назад</button>
         </div>
 
@@ -360,7 +397,7 @@ select option { background: var(--s2); }
         </div>
 
         <div class="join-config">
-          <div class="join-title">⚙ Настройка объединения</div>
+          <div class="join-title">Настройка объединения</div>
 
           <div class="row">
             <div class="field">
@@ -381,13 +418,13 @@ select option { background: var(--s2); }
           </div>
 
           <button class="btn btn-outline" style="margin-bottom:10px" onclick="toggleSQL()">
-            👁 Предпросмотр SQL
+            Предпросмотр SQL
           </button>
           <div class="sql-box" id="sql-preview"></div>
 
           <button class="btn btn-primary" id="exec-btn" onclick="doExecute()" style="margin-top:12px">
             <div class="spin"></div>
-            <span class="btn-lbl">⚡ Выполнить консолидацию</span>
+            <span class="btn-lbl">Выполнить консолидацию</span>
           </button>
         </div>
       </div>
@@ -400,10 +437,10 @@ select option { background: var(--s2); }
   <!-- ═══ SINGLE FILE ═══ -->
   <div class="wizard" id="wiz-single">
     <div class="card">
-      <div class="card-title" style="margin-bottom:20px">📄 Загрузить один файл <span class="chip">CSV / Excel</span></div>
+      <div class="card-title" style="margin-bottom:20px">Загрузить один файл <span class="chip">CSV / Excel</span></div>
       <div class="drop" id="drop-s" style="margin-bottom:16px" ondragover="dragOver(event,'drop-s')" ondragleave="dragLeave('drop-s')" ondrop="dropFile(event,'fs')">
         <input type="file" id="fs" accept=".csv,.xlsx,.xls" onchange="fileChosen('fs','drop-s','fns')">
-        <div class="drop-icon">📂</div>
+        
         <div class="drop-label">Перетащите или нажмите для выбора файла</div>
         <div class="drop-hint">CSV, XLSX, XLS — UTF-8 и Windows-1251</div>
         <div class="drop-file" id="fns"></div>
@@ -429,7 +466,7 @@ select option { background: var(--s2); }
   <!-- ═══ DATABASE ═══ -->
   <div class="wizard" id="wiz-database">
     <div class="card">
-      <div class="card-title" style="margin-bottom:20px">🗄 Подключить внешнюю базу данных <span class="chip purple">PostgreSQL / MySQL</span></div>
+      <div class="card-title" style="margin-bottom:20px">Подключить внешнюю базу данных <span class="chip purple">PostgreSQL / MySQL</span></div>
       <div class="row">
         <div class="field">
           <label>Тип БД</label>
@@ -469,7 +506,7 @@ select option { background: var(--s2); }
       </div>
       <button class="btn btn-primary" id="db-btn" onclick="doConnect()">
         <div class="spin"></div>
-        <span class="btn-lbl">🔌 Подключить и добавить в Superset</span>
+        <span class="btn-lbl">Подключить и добавить в Superset</span>
       </button>
       <div class="result-panel" id="db-result" style="margin-top:16px"></div>
     </div>
@@ -479,10 +516,23 @@ select option { background: var(--s2); }
   <div class="wizard" id="wiz-tables">
     <div class="card">
       <div class="card-head">
-        <div class="card-title">📊 Загруженные таблицы</div>
-        <button class="btn-outline btn" style="width:auto;padding:7px 14px;font-size:11px" onclick="loadTables()">↻ Обновить</button>
+        <div class="card-title">Загруженные таблицы</div>
+        <button class="btn-outline btn" style="width:auto;padding:7px 14px;font-size:11px" onclick="loadTables()">Обновить</button>
       </div>
       <div class="tlist" id="tlist">
+        <div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ИСТОРИЯ КОНСОЛИДАЦИЙ ═══ -->
+  <div class="wizard" id="wiz-history">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">История консолидаций <span class="chip">метаданные схемы</span></div>
+        <button class="btn-outline btn" style="width:auto;padding:7px 14px;font-size:11px" onclick="loadHistory()">↻ Обновить</button>
+      </div>
+      <div id="history-container">
         <div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>
       </div>
     </div>
@@ -498,19 +548,20 @@ let sqlVisible = false;
 
 // ── Mode switching ─────────────────────────────────
 function setMode(m) {
+  const modes = ['consolidate','single','database','tables','history'];
   document.querySelectorAll('.mode-btn').forEach((b,i) =>
-    b.classList.toggle('active', ['consolidate','single','database','tables'][i] === m));
+    b.classList.toggle('active', modes[i] === m));
   document.querySelectorAll('.wizard').forEach(w => w.classList.remove('active'));
   document.getElementById('wiz-' + m).classList.add('active');
   if (m === 'tables') loadTables();
+  if (m === 'history') loadHistory();
 }
 
 // ── File handling ──────────────────────────────────
 function fileChosen(inputId, dropId, labelId) {
   const f = document.getElementById(inputId).files[0];
   if (!f) return;
-  const el = document.getElementById(labelId);
-  el.textContent = '✓ ' + f.name + ' (' + fmt(f.size) + ')';
+  document.getElementById(labelId).textContent = '✓ ' + f.name + ' (' + fmt(f.size) + ')';
   document.getElementById(dropId).classList.add('loaded');
 }
 
@@ -595,8 +646,7 @@ async function doAnalyze() {
 
   setLoading('analyze-btn', true);
   const fd = new FormData();
-  fd.append('file1', f1);
-  fd.append('file2', f2);
+  fd.append('file1', f1); fd.append('file2', f2);
   fd.append('table1_name', document.getElementById('t1name').value);
   fd.append('table2_name', document.getElementById('t2name').value);
 
@@ -604,7 +654,6 @@ async function doAnalyze() {
     const r = await fetch(API + '/api/consolidate/analyze', { method: 'POST', body: fd });
     const d = await r.json();
     if (!r.ok) throw new Error(d.detail || JSON.stringify(d));
-
     analysisData = d;
     renderAnalysis(d);
     document.getElementById('step-upload').style.display = 'none';
@@ -621,7 +670,6 @@ function renderAnalysis(d) {
   const t1 = d.table1, t2 = d.table2;
   const common = new Set(d.common_columns);
 
-  // Column lists
   const makeList = (title, cols, chip) => {
     const items = cols.map(c =>
       `<div class="col-item ${common.has(c) ? 'common' : ''}">
@@ -638,11 +686,9 @@ function renderAnalysis(d) {
   </div>`;
 
   document.getElementById('cols-grid').innerHTML =
-    makeList('📄 ' + t1.name, t1.columns, '') +
-    connector +
+    makeList('📄 ' + t1.name, t1.columns, '') + connector +
     makeList('📄 ' + t2.name, t2.columns, 'green');
 
-  // Join column select
   const sel = document.getElementById('join-col');
   sel.innerHTML = '';
   if (d.common_columns.length === 0) {
@@ -657,8 +703,8 @@ function renderAnalysis(d) {
     if (d.suggested_join_column) sel.value = d.suggested_join_column;
   }
 
-  // Default result name
-  document.getElementById('result-name').value = `consolidated_${t1.name}_${t2.name}`.slice(0, 50);
+  document.getElementById('result-name').value =
+    `consolidated_${t1.name}_${t2.name}`.slice(0, 50);
 }
 
 async function doExecute() {
@@ -683,7 +729,6 @@ async function doExecute() {
     });
     const d = await r.json();
     if (!r.ok) throw new Error(d.detail || JSON.stringify(d));
-
     setStep(4);
     showConsResult(true, d);
   } catch(e) {
@@ -696,10 +741,9 @@ async function doExecute() {
 function showConsResult(ok, d) {
   const panel = document.getElementById('cons-result');
   panel.className = 'result-panel show ' + (ok ? 'success' : 'error');
-
   if (ok) {
     panel.innerHTML = `
-      <div class="result-title success">Консолидация выполнена успешно</div>
+      <div class="result-title success">✓ Консолидация выполнена успешно</div>
       <div class="result-stats">
         <div class="stat"><div class="stat-val">${d.rows.toLocaleString()}</div><div class="stat-label">строк</div></div>
         <div class="stat"><div class="stat-val">${d.join_type}</div><div class="stat-label">тип JOIN</div></div>
@@ -731,19 +775,19 @@ async function doSingle() {
     const p = document.getElementById('single-result');
     if (r.ok) {
       p.className = 'result-panel show success';
-      p.innerHTML = `<div class="result-title success">Загружено</div>
+      p.innerHTML = `<div class="result-title success">✓ Загружено</div>
         <div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px">
           Таблица: <b>${d.table}</b> · ${d.rows} строк · ${d.columns.length} колонок
         </div>
         <a href="http://localhost:8088/tablemodelview/list/" target="_blank" class="result-link">Открыть в Superset</a>`;
     } else {
       p.className = 'result-panel show error';
-      p.innerHTML = `<div class="result-title error">Ошибка</div><div style="font-family:var(--mono);font-size:11px">${d.detail}</div>`;
+      p.innerHTML = `<div class="result-title error">✗ Ошибка</div><div style="font-family:var(--mono);font-size:11px">${d.detail}</div>`;
     }
   } catch(e) {
     const p = document.getElementById('single-result');
     p.className = 'result-panel show error';
-    p.innerHTML = `<div class="result-title error">Ошибка соединения</div><div style="font-family:var(--mono);font-size:11px">${e.message}</div>`;
+    p.innerHTML = `<div class="result-title error">✗ Ошибка соединения</div><div style="font-family:var(--mono);font-size:11px">${e.message}</div>`;
   } finally {
     setLoading('single-btn', false);
   }
@@ -807,6 +851,106 @@ async function loadTables() {
   } catch(e) {
     el.innerHTML = `<div style="color:var(--red);font-family:var(--mono);font-size:11px">Ошибка: ${e.message}</div>`;
   }
+}
+
+// ── История консолидаций ────────────────────────────
+async function loadHistory() {
+  const el = document.getElementById('history-container');
+  el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>';
+  try {
+    const r = await fetch(API + '/api/consolidation/history?limit=50');
+    const d = await r.json();
+    if (!d.history.length) {
+      el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px;padding:8px 0">Операций консолидации ещё не было</div>';
+      return;
+    }
+    el.innerHTML = '<div class="history-list">' +
+      d.history.map((rec, i) => renderHistoryItem(rec, i)).join('') +
+    '</div>';
+  } catch(e) {
+    el.innerHTML = `<div style="color:var(--red);font-family:var(--mono);font-size:11px">Ошибка: ${e.message}</div>`;
+  }
+}
+
+function renderHistoryItem(rec, i) {
+  const dt = new Date(rec.created_at);
+  const when = dt.toLocaleString('ru-RU', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  const isOk = rec.status === 'success';
+  const chipCls = isOk ? 'green' : 'red';
+  const statusLabel = isOk ? '✓ успех' : '✗ ошибка';
+
+  const sqlEscaped = (rec.sql_text || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  return `
+  <div class="history-item status-${rec.status}" onclick="toggleHistoryDetail(${i})">
+    <div class="history-header">
+      <div>
+        <div class="history-view">👁 ${rec.result_view}</div>
+        <div class="history-flow">
+          <span class="history-tbl">📋 ${rec.source_table_1}</span>
+          <span class="history-arrow">+</span>
+          <span class="history-tbl">📋 ${rec.source_table_2}</span>
+          <span class="history-arrow">→</span>
+          <span style="color:var(--blue2);font-family:var(--mono);font-size:11px">${rec.result_schema}.${rec.result_view}</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        <span class="chip ${chipCls}">${statusLabel}</span>
+        <span class="history-when">${when}</span>
+      </div>
+    </div>
+
+    <div class="history-meta">
+      <span class="chip">${rec.join_type} JOIN</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--text2)">по: <b>${rec.join_column}</b></span>
+      ${rec.row_count != null ? `<span style="font-family:var(--mono);font-size:10px;color:var(--text3)">${rec.row_count.toLocaleString()} строк</span>` : ''}
+      ${rec.columns_count != null ? `<span style="font-family:var(--mono);font-size:10px;color:var(--text3)">${rec.columns_count} колонок</span>` : ''}
+    </div>
+
+    <div class="history-detail" id="hd-${i}">
+      <div class="history-detail-grid">
+        <div class="detail-cell">
+          <div class="detail-cell-label">Источник 1 (откуда)</div>
+          <div class="detail-cell-val">${rec.source_schema}.${rec.source_table_1}</div>
+        </div>
+        <div class="detail-cell">
+          <div class="detail-cell-label">Источник 2 (откуда)</div>
+          <div class="detail-cell-val">${rec.source_schema}.${rec.source_table_2}</div>
+        </div>
+        <div class="detail-cell">
+          <div class="detail-cell-label">Результат (куда)</div>
+          <div class="detail-cell-val">${rec.result_schema}.${rec.result_view}</div>
+        </div>
+        <div class="detail-cell">
+          <div class="detail-cell-label">Поле объединения</div>
+          <div class="detail-cell-val">${rec.join_column}</div>
+        </div>
+        <div class="detail-cell">
+          <div class="detail-cell-label">Тип JOIN</div>
+          <div class="detail-cell-val">${rec.join_type}</div>
+        </div>
+        <div class="detail-cell">
+          <div class="detail-cell-label">Выполнено (когда)</div>
+          <div class="detail-cell-val">${when}</div>
+        </div>
+        ${rec.row_count != null ? `<div class="detail-cell"><div class="detail-cell-label">Строк в результате</div><div class="detail-cell-val">${rec.row_count.toLocaleString()}</div></div>` : ''}
+        ${rec.columns_count != null ? `<div class="detail-cell"><div class="detail-cell-label">Колонок</div><div class="detail-cell-val">${rec.columns_count}</div></div>` : ''}
+        <div class="detail-cell">
+          <div class="detail-cell-label">Superset</div>
+          <div class="detail-cell-val">${rec.superset_status || '—'}</div>
+        </div>
+        ${rec.error_message ? `<div class="detail-cell" style="grid-column:1/-1;border-color:rgba(239,68,68,.3)"><div class="detail-cell-label" style="color:var(--red)">Ошибка</div><div class="detail-cell-val" style="color:var(--red)">${rec.error_message}</div></div>` : ''}
+      </div>
+      ${sqlEscaped ? `
+      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:6px;text-transform:uppercase;letter-spacing:.8px">SQL VIEW (аудит)</div>
+      <div class="history-sql">${sqlEscaped}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+function toggleHistoryDetail(i) {
+  const el = document.getElementById('hd-' + i);
+  el.classList.toggle('open');
 }
 
 function autoPort() {

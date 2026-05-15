@@ -187,16 +187,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-  databridge-react:
-    build: ./databridge-react
-    container_name: diploma_react
-    ports:
-      - "3000:3000"
-    networks:
-      - diploma_net
-    depends_on:
-      - dataloader
-      
+     
 volumes:
   postgres_data:
   mysql_data:

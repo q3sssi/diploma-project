@@ -1,0 +1,18 @@
+[2026-05-12T11:48:08.778+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-05-12T11:48:08.869+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: etl_consolidation_pipeline.check_mysql scheduled__2026-05-11T06:00:00+00:00 [queued]>
+[2026-05-12T11:48:08.892+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: etl_consolidation_pipeline.check_mysql scheduled__2026-05-11T06:00:00+00:00 [queued]>
+[2026-05-12T11:48:08.896+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 2
+[2026-05-12T11:48:08.928+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): check_mysql> on 2026-05-11 06:00:00+00:00
+[2026-05-12T11:48:08.957+0000] {logging_mixin.py:188} WARNING - /home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=184) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-05-12T11:48:08.948+0000] {standard_task_runner.py:90} INFO - Running: ['airflow', 'tasks', 'run', 'etl_consolidation_pipeline', 'check_mysql', 'scheduled__2026-05-11T06:00:00+00:00', '--job-id', '30', '--raw', '--subdir', 'DAGS_FOLDER/etl_pipeline.py', '--cfg-path', '/tmp/tmp35lrs9q3']
+[2026-05-12T11:48:08.959+0000] {standard_task_runner.py:63} INFO - Started process 188 to run task
+[2026-05-12T11:48:08.962+0000] {standard_task_runner.py:91} INFO - Job 30: Subtask check_mysql
+[2026-05-12T11:48:09.192+0000] {task_command.py:426} INFO - Running <TaskInstance: etl_consolidation_pipeline.check_mysql scheduled__2026-05-11T06:00:00+00:00 [running]> on host 5ead9d608584
+[2026-05-12T11:48:09.542+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='diploma' AIRFLOW_CTX_DAG_ID='etl_consolidation_pipeline' AIRFLOW_CTX_TASK_ID='check_mysql' AIRFLOW_CTX_EXECUTION_DATE='2026-05-11T06:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-05-11T06:00:00+00:00'
+[2026-05-12T11:48:09.544+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-05-12T11:48:09.699+0000] {etl_pipeline.py:51} INFO - MySQL OK. Записей в employees: 7
+[2026-05-12T11:48:09.700+0000] {python.py:237} INFO - Done. Returned value was: 7
+[2026-05-12T11:48:09.701+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-05-12T11:48:09.761+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=etl_consolidation_pipeline, task_id=check_mysql, run_id=scheduled__2026-05-11T06:00:00+00:00, execution_date=20260511T060000, start_date=20260512T114808, end_date=20260512T114809
+[2026-05-12T11:48:09.832+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2026-05-12T11:48:09.855+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
