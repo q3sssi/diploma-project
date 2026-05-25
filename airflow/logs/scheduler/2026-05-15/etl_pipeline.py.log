@@ -6680,3 +6680,31 @@
 [2026-05-15T15:28:16.721+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:28:16.720+0000] {dag.py:3096} INFO - Sync 1 DAGs
 [2026-05-15T15:28:16.778+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:28:16.778+0000] {dag.py:3954} INFO - Setting next_dagrun for etl_consolidation_pipeline to 2026-05-14 06:00:00+00:00, run_after=2026-05-15 06:00:00+00:00
 [2026-05-15T15:28:16.829+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/etl_pipeline.py took 0.259 seconds
+[2026-05-15T15:28:47.018+0000] {processor.py:161} INFO - Started process (PID=987) to work on /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:28:47.020+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/etl_pipeline.py for tasks to queue
+[2026-05-15T15:28:47.024+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:28:47.023+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:28:47.066+0000] {processor.py:840} INFO - DAG(s) 'etl_consolidation_pipeline' retrieved from /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:28:47.123+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:28:47.122+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-05-15T15:28:47.172+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:28:47.172+0000] {dag.py:3954} INFO - Setting next_dagrun for etl_consolidation_pipeline to 2026-05-14 06:00:00+00:00, run_after=2026-05-15 06:00:00+00:00
+[2026-05-15T15:28:47.217+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/etl_pipeline.py took 0.210 seconds
+[2026-05-15T15:29:17.371+0000] {processor.py:161} INFO - Started process (PID=992) to work on /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:29:17.373+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/etl_pipeline.py for tasks to queue
+[2026-05-15T15:29:17.377+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:29:17.376+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:29:17.420+0000] {processor.py:840} INFO - DAG(s) 'etl_consolidation_pipeline' retrieved from /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:29:17.478+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:29:17.478+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-05-15T15:29:17.525+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:29:17.524+0000] {dag.py:3954} INFO - Setting next_dagrun for etl_consolidation_pipeline to 2026-05-14 06:00:00+00:00, run_after=2026-05-15 06:00:00+00:00
+[2026-05-15T15:29:17.566+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/etl_pipeline.py took 0.205 seconds
+[2026-05-15T15:29:47.724+0000] {processor.py:161} INFO - Started process (PID=997) to work on /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:29:47.726+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/etl_pipeline.py for tasks to queue
+[2026-05-15T15:29:47.730+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:29:47.729+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:29:47.774+0000] {processor.py:840} INFO - DAG(s) 'etl_consolidation_pipeline' retrieved from /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:29:47.832+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:29:47.832+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-05-15T15:29:47.880+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:29:47.879+0000] {dag.py:3954} INFO - Setting next_dagrun for etl_consolidation_pipeline to 2026-05-14 06:00:00+00:00, run_after=2026-05-15 06:00:00+00:00
+[2026-05-15T15:29:47.922+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/etl_pipeline.py took 0.209 seconds
+[2026-05-15T15:30:18.071+0000] {processor.py:161} INFO - Started process (PID=1002) to work on /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:30:18.073+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/etl_pipeline.py for tasks to queue
+[2026-05-15T15:30:18.077+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:30:18.076+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:30:18.123+0000] {processor.py:840} INFO - DAG(s) 'etl_consolidation_pipeline' retrieved from /opt/airflow/dags/etl_pipeline.py
+[2026-05-15T15:30:18.197+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:30:18.197+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-05-15T15:30:18.250+0000] {logging_mixin.py:188} INFO - [2026-05-15T15:30:18.250+0000] {dag.py:3954} INFO - Setting next_dagrun for etl_consolidation_pipeline to 2026-05-14 06:00:00+00:00, run_after=2026-05-15 06:00:00+00:00
+[2026-05-15T15:30:18.308+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/etl_pipeline.py took 0.249 seconds

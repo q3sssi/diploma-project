@@ -11,6 +11,7 @@ RUN pip install --no-cache-dir \
     sqlalchemy==2.0.30 \
     requests==2.31.0 \
     python-multipart==0.0.9 \
+    sqlparse==0.5.0 \
     -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 COPY main.py .

@@ -3,38 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Консолидация данных</title>
+<title>DataBridge — Консолидация данных</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #08090d;
-  --s1: #0f1117;
-  --s2: #161a24;
-  --s3: #1d2233;
-  --border: #252d40;
-  --border2: #2e3850;
-  --blue: #3b82f6;
-  --blue2: #60a5fa;
-  --purple: #8b5cf6;
-  --green: #22c55e;
-  --red: #ef4444;
-  --yellow: #f59e0b;
-  --text: #e2e8f0;
-  --text2: #94a3b8;
-  --text3: #4b5563;
-  --mono: 'JetBrains Mono', monospace;
-  --sans: 'Outfit', sans-serif;
+ --bg: #08090d;
+ --s1: #0f1117;
+ --s2: #161a24;
+ --s3: #1d2233;
+ --border: #252d40;
+ --border2: #2e3850;
+ --blue: #3b82f6;
+ --blue2: #60a5fa;
+ --purple: #8b5cf6;
+ --green: #22c55e;
+ --red: #ef4444;
+ --yellow: #f59e0b;
+ --text: #e2e8f0;
+ --text2: #94a3b8;
+ --text3: #4b5563;
+ --mono: 'JetBrains Mono', monospace;
+ --sans: 'Outfit', sans-serif;
 }
 
 body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
 
 body::after {
-  content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 9999;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity: 0.4;
+ content: '';
+ position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+ background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+ opacity: 0.4;
 }
 
 .wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 100px; }
@@ -42,30 +42,29 @@ body::after {
 .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 52px; flex-wrap: wrap; gap: 16px; }
 .brand { display: flex; align-items: center; gap: 14px; }
 .brand-mark {
-  width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
-  font-size: 20px; box-shadow: 0 0 20px rgba(59,130,246,0.3);
+ width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+ background: linear-gradient(135deg, var(--blue), var(--purple));
+ font-size: 20px; box-shadow: 0 0 20px rgba(59,130,246,0.3);
 }
 .brand-name { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
 .brand-name em { color: var(--blue); font-style: normal; }
 .brand-sub { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 2px; }
 .open-superset {
-  display: flex; align-items: center; gap: 8px; padding: 9px 16px;
-  background: var(--s2); border: 1px solid var(--border); border-radius: 10px;
-  color: var(--text2); text-decoration: none; font-size: 12px; font-family: var(--mono);
-  transition: all .2s;
+ display: flex; align-items: center; gap: 8px; padding: 9px 16px;
+ background: var(--s2); border: 1px solid var(--border); border-radius: 10px;
+ color: var(--text2); text-decoration: none; font-size: 12px; font-family: var(--mono);
+ transition: all .2s;
 }
 .open-superset:hover { border-color: var(--blue); color: var(--blue2); }
 
 .mode-bar {
-  display: flex; background: var(--s1); border: 1px solid var(--border);
-  border-radius: 14px; padding: 5px; margin-bottom: 36px; gap: 4px; flex-wrap: wrap;
+ display: flex; background: var(--s1); border: 1px solid var(--border);
+ border-radius: 14px; padding: 5px; margin-bottom: 36px; gap: 4px;
 }
 .mode-btn {
-  flex: 1; padding: 10px; border: none; background: transparent; cursor: pointer;
-  border-radius: 10px; font-family: var(--sans); font-size: 13px; font-weight: 600;
-  color: var(--text2); transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 7px;
-  white-space: nowrap;
+ flex: 1; padding: 10px; border: none; background: transparent; cursor: pointer;
+ border-radius: 10px; font-family: var(--sans); font-size: 13px; font-weight: 600;
+ color: var(--text2); transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 7px;
 }
 .mode-btn.active { background: var(--s3); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,.4); }
 .mode-btn:hover:not(.active) { color: var(--text); }
@@ -74,21 +73,21 @@ body::after {
 .wizard.active { display: block; }
 
 .step-track {
-  display: flex; align-items: center; margin-bottom: 36px; position: relative;
+ display: flex; align-items: center; margin-bottom: 36px; position: relative;
 }
 .step-track::before {
-  content: ''; position: absolute; top: 18px; left: 18px; right: 18px; height: 1px;
-  background: var(--border); z-index: 0;
+ content: ''; position: absolute; top: 18px; left: 18px; right: 18px; height: 1px;
+ background: var(--border); z-index: 0;
 }
 .step-node {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  flex: 1; position: relative; z-index: 1;
+ display: flex; flex-direction: column; align-items: center; gap: 8px;
+ flex: 1; position: relative; z-index: 1;
 }
 .step-circle {
-  width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
-  background: var(--s1); display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; font-family: var(--mono); color: var(--text3);
-  transition: all .3s;
+ width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+ background: var(--s1); display: flex; align-items: center; justify-content: center;
+ font-size: 12px; font-weight: 700; font-family: var(--mono); color: var(--text3);
+ transition: all .3s;
 }
 .step-circle.active { border-color: var(--blue); color: var(--blue); background: rgba(59,130,246,.1); box-shadow: 0 0 12px rgba(59,130,246,.2); }
 .step-circle.done { border-color: var(--green); color: var(--green); background: rgba(34,197,94,.1); }
@@ -96,44 +95,54 @@ body::after {
 .step-label.active { color: var(--text2); }
 
 .card {
-  background: var(--s1); border: 1px solid var(--border); border-radius: 16px;
-  padding: 24px; margin-bottom: 16px; position: relative; overflow: hidden;
+ background: var(--s1); border: 1px solid var(--border); border-radius: 16px;
+ padding: 24px; margin-bottom: 16px; position: relative; overflow: hidden;
 }
 .card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(59,130,246,.2), transparent);
+ content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+ background: linear-gradient(90deg, transparent, rgba(59,130,246,.2), transparent);
 }
 .card-head {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+ display: flex; align-items: center; justify-content: space-between;
+ margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
 }
 .card-title { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 .chip {
-  padding: 3px 10px; border-radius: 20px; font-size: 10px; font-family: var(--mono); font-weight: 500;
-  background: rgba(59,130,246,.12); color: var(--blue2);
+ padding: 3px 10px; border-radius: 20px; font-size: 10px; font-family: var(--mono); font-weight: 500;
+ background: rgba(59,130,246,.12); color: var(--blue2);
 }
 .chip.green { background: rgba(34,197,94,.12); color: var(--green); }
 .chip.purple { background: rgba(139,92,246,.12); color: #a78bfa; }
-.chip.red { background: rgba(239,68,68,.12); color: var(--red); }
+.chip.yellow { background: rgba(245,158,11,.12); color: var(--yellow); }
 
 .drops { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
 .drop {
-  border: 2px dashed var(--border); border-radius: 12px; padding: 28px 16px; text-align: center;
-  cursor: pointer; transition: all .2s; position: relative; min-height: 140px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+ border: 2px dashed var(--border); border-radius: 12px; padding: 28px 16px; text-align: center;
+ cursor: pointer; transition: all .2s; position: relative; min-height: 140px;
+ display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
 }
 .drop input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
 .drop:hover, .drop.over { border-color: var(--blue); background: rgba(59,130,246,.04); }
 .drop.loaded { border-color: var(--green); border-style: solid; }
+.drop.loaded-sql { border-color: var(--yellow); border-style: solid; }
 .drop-icon { font-size: 28px; }
 .drop-label { font-size: 12px; font-weight: 700; color: var(--text2); }
 .drop-hint { font-size: 10px; color: var(--text3); font-family: var(--mono); }
 .drop-file { font-size: 11px; color: var(--green); font-family: var(--mono); margin-top: 4px; word-break: break-all; }
+.drop-file.sql { color: var(--yellow); }
 .drop-num {
-  position: absolute; top: 10px; left: 10px; width: 22px; height: 22px; border-radius: 6px;
-  background: var(--s3); border: 1px solid var(--border);
-  font-size: 10px; font-weight: 700; color: var(--text2); font-family: var(--mono);
-  display: flex; align-items: center; justify-content: center;
+ position: absolute; top: 10px; left: 10px; width: 22px; height: 22px; border-radius: 6px;
+ background: var(--s3); border: 1px solid var(--border);
+ font-size: 10px; font-weight: 700; color: var(--text2); font-family: var(--mono);
+ display: flex; align-items: center; justify-content: center;
+}
+
+/* SQL badge on drop zone */
+.drop-sql-badge {
+ position: absolute; top: 10px; right: 10px;
+ padding: 2px 7px; border-radius: 5px; font-size: 9px; font-family: var(--mono); font-weight: 700;
+ background: rgba(245,158,11,.15); color: var(--yellow); border: 1px solid rgba(245,158,11,.3);
+ display: none;
 }
 
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
@@ -142,26 +151,26 @@ body::after {
 .field { display: flex; flex-direction: column; gap: 5px; }
 label { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .8px; font-family: var(--mono); }
 input[type=text], input[type=password], select {
-  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-  color: var(--text); font-family: var(--mono); font-size: 12px; padding: 9px 11px;
-  outline: none; transition: border-color .2s; width: 100%;
+ background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+ color: var(--text); font-family: var(--mono); font-size: 12px; padding: 9px 11px;
+ outline: none; transition: border-color .2s; width: 100%;
 }
 input:focus, select:focus { border-color: var(--blue); }
 select option { background: var(--s2); }
 
 .btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 12px 22px; border: none; border-radius: 10px; font-family: var(--sans);
-  font-size: 13px; font-weight: 700; cursor: pointer; transition: all .2s; width: 100%;
+ display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+ padding: 12px 22px; border: none; border-radius: 10px; font-family: var(--sans);
+ font-size: 13px; font-weight: 700; cursor: pointer; transition: all .2s; width: 100%;
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--blue), var(--purple));
-  color: white; box-shadow: 0 4px 16px rgba(59,130,246,.25);
+ background: linear-gradient(135deg, var(--blue), var(--purple));
+ color: white; box-shadow: 0 4px 16px rgba(59,130,246,.25);
 }
 .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(59,130,246,.35); }
 .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 .btn-outline {
-  background: transparent; border: 1px solid var(--border); color: var(--text2);
+ background: transparent; border: 1px solid var(--border); color: var(--text2);
 }
 .btn-outline:hover { border-color: var(--blue); color: var(--blue2); }
 
@@ -172,8 +181,8 @@ select option { background: var(--s2); }
 .col-list { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
 .col-list-title { font-size: 10px; font-weight: 700; color: var(--text3); font-family: var(--mono); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; }
 .col-item {
-  display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 6px;
-  font-family: var(--mono); font-size: 11px; color: var(--text2); transition: background .15s;
+ display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 6px;
+ font-family: var(--mono); font-size: 11px; color: var(--text2); transition: background .15s;
 }
 .col-item.common { color: var(--blue2); background: rgba(59,130,246,.07); }
 .col-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
@@ -185,17 +194,17 @@ select option { background: var(--s2); }
 .join-title { font-size: 11px; font-weight: 700; color: var(--text2); font-family: var(--mono); margin-bottom: 14px; text-transform: uppercase; letter-spacing: .8px; }
 .join-types { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
 .join-type-btn {
-  padding: 7px 14px; border: 1px solid var(--border); border-radius: 8px;
-  background: transparent; color: var(--text2); font-family: var(--mono); font-size: 11px;
-  cursor: pointer; transition: all .2s;
+ padding: 7px 14px; border: 1px solid var(--border); border-radius: 8px;
+ background: transparent; color: var(--text2); font-family: var(--mono); font-size: 11px;
+ cursor: pointer; transition: all .2s;
 }
 .join-type-btn.active { border-color: var(--blue); color: var(--blue2); background: rgba(59,130,246,.1); }
 .join-type-btn:hover:not(.active) { border-color: var(--border2); color: var(--text); }
 
 .sql-box {
-  background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
-  padding: 14px; font-family: var(--mono); font-size: 11px; line-height: 1.7;
-  color: #7dd3fc; white-space: pre-wrap; margin-top: 12px; display: none;
+ background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+ padding: 14px; font-family: var(--mono); font-size: 11px; line-height: 1.7;
+ color: #7dd3fc; white-space: pre-wrap; margin-top: 12px; display: none;
 }
 .sql-box.show { display: block; }
 .sql-kw { color: #c084fc; }
@@ -203,8 +212,8 @@ select option { background: var(--s2); }
 .sql-op { color: #fbbf24; }
 
 .result-panel {
-  display: none; background: var(--s1); border: 1px solid var(--border);
-  border-radius: 16px; padding: 24px; margin-top: 20px;
+ display: none; background: var(--s1); border: 1px solid var(--border);
+ border-radius: 16px; padding: 24px; margin-top: 20px;
 }
 .result-panel.show { display: block; }
 .result-panel.success { border-color: rgba(34,197,94,.3); }
@@ -217,326 +226,300 @@ select option { background: var(--s2); }
 .stat-val { font-size: 22px; font-weight: 800; color: var(--text); font-family: var(--mono); }
 .stat-label { font-size: 10px; color: var(--text3); margin-top: 4px; font-family: var(--mono); text-transform: uppercase; }
 .result-link {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 12px; background: linear-gradient(135deg, rgba(59,130,246,.15), rgba(139,92,246,.15));
-  border: 1px solid rgba(59,130,246,.3); border-radius: 10px; color: var(--blue2);
-  text-decoration: none; font-weight: 600; font-size: 13px; transition: all .2s;
+ display: flex; align-items: center; justify-content: center; gap: 8px;
+ padding: 12px; background: linear-gradient(135deg, rgba(59,130,246,.15), rgba(139,92,246,.15));
+ border: 1px solid rgba(59,130,246,.3); border-radius: 10px; color: var(--blue2);
+ text-decoration: none; font-weight: 600; font-size: 13px; transition: all .2s;
 }
 .result-link:hover { background: linear-gradient(135deg, rgba(59,130,246,.25), rgba(139,92,246,.25)); }
 
+/* SQL multi-table result list */
+.sql-tables-list { display: grid; gap: 8px; margin-bottom: 16px; }
+.sql-table-row {
+ display: flex; align-items: center; justify-content: space-between;
+ background: var(--s2); border: 1px solid var(--border); border-radius: 8px;
+ padding: 10px 14px; font-family: var(--mono); font-size: 11px;
+}
+.sql-table-name { color: var(--green); font-weight: 700; }
+.sql-table-meta { color: var(--text3); }
+
 .tlist { display: grid; gap: 6px; }
 .tlist-item {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 14px; background: var(--bg); border: 1px solid var(--border);
-  border-radius: 8px; font-family: var(--mono); font-size: 11px;
+ display: flex; align-items: center; justify-content: space-between;
+ padding: 10px 14px; background: var(--bg); border: 1px solid var(--border);
+ border-radius: 8px; font-family: var(--mono); font-size: 11px;
 }
 .tlist-name { color: var(--text); display: flex; align-items: center; gap: 8px; }
 .tlist-size { color: var(--text3); }
-
-/* ── История консолидаций ── */
-.history-list { display: grid; gap: 10px; }
-
-.history-item {
-  background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
-  padding: 16px; cursor: pointer; transition: border-color .2s;
-}
-.history-item:hover { border-color: var(--border2); }
-.history-item.status-error { border-left: 3px solid var(--red); }
-.history-item.status-success { border-left: 3px solid var(--green); }
-
-.history-header {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  gap: 10px; flex-wrap: wrap;
-}
-.history-view {
-  font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text);
-}
-.history-meta {
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 8px;
-}
-.history-when {
-  font-family: var(--mono); font-size: 10px; color: var(--text3);
-}
-.history-flow {
-  font-family: var(--mono); font-size: 11px; color: var(--text2);
-  display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 6px;
-}
-.history-tbl {
-  background: var(--s2); border: 1px solid var(--border); border-radius: 6px;
-  padding: 2px 8px; font-size: 11px;
-}
-.history-arrow { color: var(--text3); font-size: 14px; }
-
-.history-detail {
-  display: none; margin-top: 14px; padding-top: 14px;
-  border-top: 1px solid var(--border);
-}
-.history-detail.open { display: block; }
-.history-detail-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 8px; margin-bottom: 12px;
-}
-.detail-cell {
-  background: var(--s1); border: 1px solid var(--border); border-radius: 8px; padding: 10px;
-}
-.detail-cell-label { font-size: 9px; color: var(--text3); font-family: var(--mono); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px; }
-.detail-cell-val { font-size: 12px; color: var(--text); font-family: var(--mono); word-break: break-all; }
-
-.history-sql {
-  background: var(--s1); border: 1px solid var(--border); border-radius: 8px;
-  padding: 12px; font-family: var(--mono); font-size: 10px; line-height: 1.7;
-  color: #7dd3fc; white-space: pre-wrap; max-height: 180px; overflow-y: auto;
-}
 
 .spin { width: 15px; height: 15px; border: 2px solid rgba(255,255,255,.2); border-top-color: #fff; border-radius: 50%; animation: rot .6s linear infinite; display: none; }
 @keyframes rot { to { transform: rotate(360deg); } }
 .loading .spin { display: inline-block; }
 .loading .btn-lbl { display: none; }
 
+/* SQL file info note */
+.sql-note {
+ background: rgba(245,158,11,.07); border: 1px solid rgba(245,158,11,.2);
+ border-radius: 8px; padding: 10px 14px; font-family: var(--mono); font-size: 10px;
+ color: var(--yellow); line-height: 1.6; margin-bottom: 12px; display: none;
+}
+
 @media (max-width: 600px) {
-  .drops { grid-template-columns: 1fr; }
-  .row { grid-template-columns: 1fr; }
-  .row.triple { grid-template-columns: 1fr; }
-  .cols-grid { grid-template-columns: 1fr; }
-  .connector-line { display: none; }
-  .result-stats { grid-template-columns: 1fr 1fr; }
+ .drops { grid-template-columns: 1fr; }
+ .row { grid-template-columns: 1fr; }
+ .row.triple { grid-template-columns: 1fr; }
+ .cols-grid { grid-template-columns: 1fr; }
+ .connector-line { display: none; }
+ .result-stats { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <header class="header">
-    <a href="http://localhost:8088" target="_blank" class="open-superset">Открыть Superset</a>
-  </header>
+ <header class="header">
+ <div class="brand">
+ <div class="brand-mark">DB</div>
+ <div>
+ <div class="brand-name">Data<em>Bridge</em></div>
+ <div class="brand-sub">консолидация данных</div>
+ </div>
+ </div>
+ <a href="http://localhost:8088" target="_blank" class="open-superset">Открыть Superset</a>
+ </header>
 
-  <div class="mode-bar">
-    <button class="mode-btn active" onclick="setMode('consolidate')">Консолидация двух источников</button>
-    <button class="mode-btn" onclick="setMode('single')">Загрузить один файл</button>
-    <button class="mode-btn" onclick="setMode('database')">Подключить БД</button>
-    <button class="mode-btn" onclick="setMode('tables')">Мои таблицы</button>
-    <button class="mode-btn" onclick="setMode('history')">История</button>
-  </div>
+ <div class="mode-bar">
+ <button class="mode-btn active" onclick="setMode('consolidate')">Консолидация двух источников</button>
+ <button class="mode-btn" onclick="setMode('single')">Загрузить один файл</button>
+ <button class="mode-btn" onclick="setMode('database')">Подключить БД</button>
+ <button class="mode-btn" onclick="setMode('tables')">Мои таблицы</button>
+ </div>
 
-  <!-- ═══ CONSOLIDATION WIZARD ═══ -->
-  <div class="wizard active" id="wiz-consolidate">
+ <!-- ═══ CONSOLIDATION WIZARD ═══ -->
+ <div class="wizard active" id="wiz-consolidate">
 
-    <div class="step-track">
-      <div class="step-node">
-        <div class="step-circle active" id="sc1">1</div>
-        <div class="step-label active" id="sl1">Загрузка</div>
-      </div>
-      <div class="step-node">
-        <div class="step-circle" id="sc2">2</div>
-        <div class="step-label" id="sl2">Анализ</div>
-      </div>
-      <div class="step-node">
-        <div class="step-circle" id="sc3">3</div>
-        <div class="step-label" id="sl3">Объединение</div>
-      </div>
-      <div class="step-node">
-        <div class="step-circle" id="sc4">4</div>
-        <div class="step-label" id="sl4">Superset</div>
-      </div>
-    </div>
+ <div class="step-track">
+ <div class="step-node">
+ <div class="step-circle active" id="sc1">1</div>
+ <div class="step-label active" id="sl1">Загрузка</div>
+ </div>
+ <div class="step-node">
+ <div class="step-circle" id="sc2">2</div>
+ <div class="step-label" id="sl2">Анализ</div>
+ </div>
+ <div class="step-node">
+ <div class="step-circle" id="sc3">3</div>
+ <div class="step-label" id="sl3">Объединение</div>
+ </div>
+ <div class="step-node">
+ <div class="step-circle" id="sc4">4</div>
+ <div class="step-label" id="sl4">Superset</div>
+ </div>
+ </div>
 
-    <!-- Step 1: Upload two files -->
-    <div id="step-upload">
-      <div class="card">
-        <div class="card-head">
-          <div class="card-title">Загрузите два источника данных <span class="chip">Шаг 1</span></div>
-        </div>
+ <div id="step-upload">
+ <div class="card">
+ <div class="card-head">
+ <div class="card-title">Загрузите два источника данных <span class="chip">Шаг 1</span></div>
+ </div>
 
-        <div class="drops">
-          <div class="drop" id="drop1" ondragover="dragOver(event,'drop1')" ondragleave="dragLeave('drop1')" ondrop="dropFile(event,'f1')">
-            <div class="drop-num">1</div>
-            <input type="file" id="f1" accept=".csv,.xlsx,.xls" onchange="fileChosen('f1','drop1','fn1')">
-            
-            <div class="drop-label">Первый источник</div>
-            <div class="drop-hint">CSV или Excel</div>
-            <div class="drop-file" id="fn1"></div>
-          </div>
-          <div class="drop" id="drop2" ondragover="dragOver(event,'drop2')" ondragleave="dragLeave('drop2')" ondrop="dropFile(event,'f2')">
-            <div class="drop-num">2</div>
-            <input type="file" id="f2" accept=".csv,.xlsx,.xls" onchange="fileChosen('f2','drop2','fn2')">
-            
-            <div class="drop-label">Второй источник</div>
-            <div class="drop-hint">CSV или Excel</div>
-            <div class="drop-file" id="fn2"></div>
-          </div>
-        </div>
+ <div class="drops">
+ <div class="drop" id="drop1" ondragover="dragOver(event,'drop1')" ondragleave="dragLeave('drop1')" ondrop="dropFile(event,'f1')">
+ <div class="drop-num">1</div>
+ <!-- added .sql -->
+ <input type="file" id="f1" accept=".csv,.xlsx,.xls,.sql" onchange="fileChosen('f1','drop1','fn1')">
+ <div class="drop-icon"></div>
+ <div class="drop-label">Первый источник</div>
+ <div class="drop-hint">CSV, Excel или SQL-дамп</div>
+ <div class="drop-file" id="fn1"></div>
+ <div class="drop-sql-badge" id="sql-badge1">SQL</div>
+ </div>
+ <div class="drop" id="drop2" ondragover="dragOver(event,'drop2')" ondragleave="dragLeave('drop2')" ondrop="dropFile(event,'f2')">
+ <div class="drop-num">2</div>
+ <!-- added .sql -->
+ <input type="file" id="f2" accept=".csv,.xlsx,.xls,.sql" onchange="fileChosen('f2','drop2','fn2')">
+ <div class="drop-icon"></div>
+ <div class="drop-label">Второй источник</div>
+ <div class="drop-hint">CSV, Excel или SQL-дамп</div>
+ <div class="drop-file" id="fn2"></div>
+ <div class="drop-sql-badge" id="sql-badge2">SQL</div>
+ </div>
+ </div>
 
-        <div class="row">
-          <div class="field">
-            <label>Название таблицы 1 (необязательно)</label>
-            <input type="text" id="t1name" placeholder="по умолчанию — имя файла">
-          </div>
-          <div class="field">
-            <label>Название таблицы 2 (необязательно)</label>
-            <input type="text" id="t2name" placeholder="по умолчанию — имя файла">
-          </div>
-        </div>
+ <!-- SQL note shown when .sql file is selected -->
+ <div class="sql-note" id="sql-note-consolidate">
+ SQL-файл: если дамп содержит несколько таблиц, для консолидации будет использована первая из них.
+ Все остальные таблицы также будут загружены в базу.
+ </div>
 
-        <button class="btn btn-primary" id="analyze-btn" onclick="doAnalyze()">
-          <div class="spin"></div>
-          <span class="btn-lbl">Загрузить и найти общие колонки</span>
-        </button>
-      </div>
-    </div>
+ <div class="row">
+ <div class="field">
+ <label>Название таблицы 1 (необязательно)</label>
+ <input type="text" id="t1name" placeholder="по умолчанию — имя файла / таблицы из SQL">
+ </div>
+ <div class="field">
+ <label>Название таблицы 2 (необязательно)</label>
+ <input type="text" id="t2name" placeholder="по умолчанию — имя файла / таблицы из SQL">
+ </div>
+ </div>
 
-    <!-- Step 2: Analysis result + join config -->
-    <div class="analysis-box" id="step-analyze">
-      <div class="card">
-        <div class="card-head">
-          <div class="card-title">Анализ структуры данных <span class="chip">Шаг 2</span></div>
-          <button class="btn-outline btn" style="width:auto;padding:6px 14px;font-size:11px" onclick="resetWizard()">← Назад</button>
-        </div>
+ <button class="btn btn-primary" id="analyze-btn" onclick="doAnalyze()">
+ <div class="spin"></div>
+ <span class="btn-lbl">Загрузить и найти общие колонки</span>
+ </button>
+ </div>
+ </div>
 
-        <div class="cols-grid" id="cols-grid">
-          <!-- Заполняется JS -->
-        </div>
+ <!-- Step 2 -->
+ <div class="analysis-box" id="step-analyze">
+ <div class="card">
+ <div class="card-head">
+ <div class="card-title">Анализ структуры данных <span class="chip">Шаг 2</span></div>
+ <button class="btn-outline btn" style="width:auto;padding:6px 14px;font-size:11px" onclick="resetWizard()">Назад</button>
+ </div>
 
-        <div class="join-config">
-          <div class="join-title">Настройка объединения</div>
+ <div class="cols-grid" id="cols-grid"></div>
 
-          <div class="row">
-            <div class="field">
-              <label>Колонка для JOIN (по какому полю объединить)</label>
-              <select id="join-col"></select>
-            </div>
-            <div class="field">
-              <label>Название результирующей таблицы</label>
-              <input type="text" id="result-name" placeholder="consolidated_data">
-            </div>
-          </div>
+ <div class="join-config">
+ <div class="join-title">Настройка объединения</div>
 
-          <div class="join-title" style="margin-top:4px">Тип объединения</div>
-          <div class="join-types">
-            <button class="join-type-btn active" onclick="setJoin(this,'LEFT')">LEFT JOIN<br><span style="font-size:9px;color:var(--text3)">все из таблицы 1</span></button>
-            <button class="join-type-btn" onclick="setJoin(this,'INNER')">INNER JOIN<br><span style="font-size:9px;color:var(--text3)">только совпадения</span></button>
-            <button class="join-type-btn" onclick="setJoin(this,'FULL OUTER')">FULL JOIN<br><span style="font-size:9px;color:var(--text3)">все записи</span></button>
-          </div>
+ <div class="row">
+ <div class="field">
+ <label>Колонка для JOIN</label>
+ <select id="join-col"></select>
+ </div>
+ <div class="field">
+ <label>Название результирующей таблицы</label>
+ <input type="text" id="result-name" placeholder="consolidated_data">
+ </div>
+ </div>
 
-          <button class="btn btn-outline" style="margin-bottom:10px" onclick="toggleSQL()">
-            Предпросмотр SQL
-          </button>
-          <div class="sql-box" id="sql-preview"></div>
+ <div class="join-title" style="margin-top:4px">Тип объединения</div>
+ <div class="join-types">
+ <button class="join-type-btn active" onclick="setJoin(this,'LEFT')">LEFT JOIN<br><span style="font-size:9px;color:var(--text3)">все из таблицы 1</span></button>
+ <button class="join-type-btn" onclick="setJoin(this,'INNER')">INNER JOIN<br><span style="font-size:9px;color:var(--text3)">только совпадения</span></button>
+ <button class="join-type-btn" onclick="setJoin(this,'FULL OUTER')">FULL JOIN<br><span style="font-size:9px;color:var(--text3)">все записи</span></button>
+ </div>
 
-          <button class="btn btn-primary" id="exec-btn" onclick="doExecute()" style="margin-top:12px">
-            <div class="spin"></div>
-            <span class="btn-lbl">Выполнить консолидацию</span>
-          </button>
-        </div>
-      </div>
+ <button class="btn btn-outline" style="margin-bottom:10px" onclick="toggleSQL()">
+ Предпросмотр SQL
+ </button>
+ <div class="sql-box" id="sql-preview"></div>
 
-      <div class="result-panel" id="cons-result"></div>
-    </div>
+ <button class="btn btn-primary" id="exec-btn" onclick="doExecute()" style="margin-top:12px">
+ <div class="spin"></div>
+ <span class="btn-lbl">Выполнить консолидацию</span>
+ </button>
+ </div>
+ </div>
 
-  </div>
+ <div class="result-panel" id="cons-result"></div>
+ </div>
 
-  <!-- ═══ SINGLE FILE ═══ -->
-  <div class="wizard" id="wiz-single">
-    <div class="card">
-      <div class="card-title" style="margin-bottom:20px">Загрузить один файл <span class="chip">CSV / Excel</span></div>
-      <div class="drop" id="drop-s" style="margin-bottom:16px" ondragover="dragOver(event,'drop-s')" ondragleave="dragLeave('drop-s')" ondrop="dropFile(event,'fs')">
-        <input type="file" id="fs" accept=".csv,.xlsx,.xls" onchange="fileChosen('fs','drop-s','fns')">
-        
-        <div class="drop-label">Перетащите или нажмите для выбора файла</div>
-        <div class="drop-hint">CSV, XLSX, XLS — UTF-8 и Windows-1251</div>
-        <div class="drop-file" id="fns"></div>
-      </div>
-      <div class="row">
-        <div class="field">
-          <label>Название таблицы (необязательно)</label>
-          <input type="text" id="s-tname" placeholder="по умолчанию — имя файла">
-        </div>
-        <div class="field">
-          <label>Лист Excel (номер или название)</label>
-          <input type="text" id="s-sheet" placeholder="0" value="0">
-        </div>
-      </div>
-      <button class="btn btn-primary" id="single-btn" onclick="doSingle()">
-        <div class="spin"></div>
-        <span class="btn-lbl">⬆ Загрузить в Superset</span>
-      </button>
-      <div class="result-panel" id="single-result" style="margin-top:16px"></div>
-    </div>
-  </div>
+ </div>
 
-  <!-- ═══ DATABASE ═══ -->
-  <div class="wizard" id="wiz-database">
-    <div class="card">
-      <div class="card-title" style="margin-bottom:20px">Подключить внешнюю базу данных <span class="chip purple">PostgreSQL / MySQL</span></div>
-      <div class="row">
-        <div class="field">
-          <label>Тип БД</label>
-          <select id="db-type" onchange="autoPort()">
-            <option value="postgresql">PostgreSQL</option>
-            <option value="mysql">MySQL</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Название подключения</label>
-          <input type="text" id="db-cname" placeholder="my_database">
-        </div>
-      </div>
-      <div class="row triple">
-        <div class="field">
-          <label>Хост</label>
-          <input type="text" id="db-host" placeholder="localhost или IP">
-        </div>
-        <div class="field">
-          <label>Порт</label>
-          <input type="text" id="db-port" placeholder="5432" value="5432">
-        </div>
-        <div class="field">
-          <label>База данных</label>
-          <input type="text" id="db-dbname" placeholder="mydb">
-        </div>
-      </div>
-      <div class="row">
-        <div class="field">
-          <label>Пользователь</label>
-          <input type="text" id="db-user" placeholder="username">
-        </div>
-        <div class="field">
-          <label>Пароль</label>
-          <input type="password" id="db-pass" placeholder="password">
-        </div>
-      </div>
-      <button class="btn btn-primary" id="db-btn" onclick="doConnect()">
-        <div class="spin"></div>
-        <span class="btn-lbl">Подключить и добавить в Superset</span>
-      </button>
-      <div class="result-panel" id="db-result" style="margin-top:16px"></div>
-    </div>
-  </div>
+ <!-- ═══ SINGLE FILE ═══ -->
+ <div class="wizard" id="wiz-single">
+ <div class="card">
+ <div class="card-title" style="margin-bottom:20px">
+ Загрузить один файл
+ <span class="chip">CSV / Excel</span>
+ <span class="chip yellow">SQL-дамп</span>
+ </div>
+ <div class="drop" id="drop-s" style="margin-bottom:16px" ondragover="dragOver(event,'drop-s')" ondragleave="dragLeave('drop-s')" ondrop="dropFile(event,'fs')">
+ <!-- added .sql -->
+ <input type="file" id="fs" accept=".csv,.xlsx,.xls,.sql" onchange="fileChosen('fs','drop-s','fns')">
+ <div class="drop-icon"></div>
+ <div class="drop-label">Перетащите или нажмите для выбора файла</div>
+ <div class="drop-hint">CSV, XLSX, XLS, SQL — UTF-8 и Windows-1251</div>
+ <div class="drop-file" id="fns"></div>
+ </div>
 
-  <!-- ═══ TABLES ═══ -->
-  <div class="wizard" id="wiz-tables">
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title">Загруженные таблицы</div>
-        <button class="btn-outline btn" style="width:auto;padding:7px 14px;font-size:11px" onclick="loadTables()">Обновить</button>
-      </div>
-      <div class="tlist" id="tlist">
-        <div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>
-      </div>
-    </div>
-  </div>
+ <!-- SQL note for single upload -->
+ <div class="sql-note" id="sql-note-single">
+ SQL-дамп: все таблицы из файла будут загружены в базу данных.
+ Если в дампе несколько таблиц — имена берутся из CREATE TABLE / INSERT INTO.
+ </div>
 
-  <!-- ═══ ИСТОРИЯ КОНСОЛИДАЦИЙ ═══ -->
-  <div class="wizard" id="wiz-history">
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title">История консолидаций <span class="chip">метаданные схемы</span></div>
-        <button class="btn-outline btn" style="width:auto;padding:7px 14px;font-size:11px" onclick="loadHistory()">↻ Обновить</button>
-      </div>
-      <div id="history-container">
-        <div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>
-      </div>
-    </div>
-  </div>
+ <div class="row">
+ <div class="field">
+ <label>Название таблицы (только для CSV/Excel)</label>
+ <input type="text" id="s-tname" placeholder="по умолчанию — имя файла">
+ </div>
+ <div class="field">
+ <label>Лист Excel (номер или название)</label>
+ <input type="text" id="s-sheet" placeholder="0" value="0">
+ </div>
+ </div>
+ <button class="btn btn-primary" id="single-btn" onclick="doSingle()">
+ <div class="spin"></div>
+ <span class="btn-lbl">Загрузить в базу данных</span>
+ </button>
+ <div class="result-panel" id="single-result" style="margin-top:16px"></div>
+ </div>
+ </div>
+
+ <!-- ═══ DATABASE ═══ -->
+ <div class="wizard" id="wiz-database">
+ <div class="card">
+ <div class="card-title" style="margin-bottom:20px">Подключить внешнюю базу данных <span class="chip purple">PostgreSQL / MySQL</span></div>
+ <div class="row">
+ <div class="field">
+ <label>Тип БД</label>
+ <select id="db-type" onchange="autoPort()">
+ <option value="postgresql">PostgreSQL</option>
+ <option value="mysql">MySQL</option>
+ </select>
+ </div>
+ <div class="field">
+ <label>Название подключения</label>
+ <input type="text" id="db-cname" placeholder="my_database">
+ </div>
+ </div>
+ <div class="row triple">
+ <div class="field">
+ <label>Хост</label>
+ <input type="text" id="db-host" placeholder="localhost или IP">
+ </div>
+ <div class="field">
+ <label>Порт</label>
+ <input type="text" id="db-port" placeholder="5432" value="5432">
+ </div>
+ <div class="field">
+ <label>База данных</label>
+ <input type="text" id="db-dbname" placeholder="mydb">
+ </div>
+ </div>
+ <div class="row">
+ <div class="field">
+ <label>Пользователь</label>
+ <input type="text" id="db-user" placeholder="username">
+ </div>
+ <div class="field">
+ <label>Пароль</label>
+ <input type="password" id="db-pass" placeholder="password">
+ </div>
+ </div>
+ <button class="btn btn-primary" id="db-btn" onclick="doConnect()">
+ <div class="spin"></div>
+ <span class="btn-lbl">Подключить и добавить в Superset</span>
+ </button>
+ <div class="result-panel" id="db-result" style="margin-top:16px"></div>
+ </div>
+ </div>
+
+ <!-- ═══ TABLES ═══ -->
+ <div class="wizard" id="wiz-tables">
+ <div class="card">
+ <div class="card-head">
+ <div class="card-title">Загруженные таблицы</div>
+ <button class="btn-outline btn" style="width:auto;padding:7px 14px;font-size:11px" onclick="loadTables()">Обновить</button>
+ </div>
+ <div class="tlist" id="tlist">
+ <div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>
+ </div>
+ </div>
+ </div>
 
 </div>
 
@@ -546,416 +529,355 @@ let joinType = 'LEFT';
 let analysisData = null;
 let sqlVisible = false;
 
-// ── Mode switching ─────────────────────────────────
 function setMode(m) {
-  const modes = ['consolidate','single','database','tables','history'];
-  document.querySelectorAll('.mode-btn').forEach((b,i) =>
-    b.classList.toggle('active', modes[i] === m));
-  document.querySelectorAll('.wizard').forEach(w => w.classList.remove('active'));
-  document.getElementById('wiz-' + m).classList.add('active');
-  if (m === 'tables') loadTables();
-  if (m === 'history') loadHistory();
+ document.querySelectorAll('.mode-btn').forEach((b,i) =>
+ b.classList.toggle('active', ['consolidate','single','database','tables'][i] === m));
+ document.querySelectorAll('.wizard').forEach(w => w.classList.remove('active'));
+ document.getElementById('wiz-' + m).classList.add('active');
+ if (m === 'tables') loadTables();
 }
 
-// ── File handling ──────────────────────────────────
 function fileChosen(inputId, dropId, labelId) {
-  const f = document.getElementById(inputId).files[0];
-  if (!f) return;
-  document.getElementById(labelId).textContent = '✓ ' + f.name + ' (' + fmt(f.size) + ')';
-  document.getElementById(dropId).classList.add('loaded');
+ const f = document.getElementById(inputId).files[0];
+ if (!f) return;
+ const isSql = f.name.toLowerCase().endsWith('.sql');
+ const el = document.getElementById(labelId);
+ el.textContent = (isSql ? '' : ' ') + f.name + ' (' + fmt(f.size) + ')';
+ el.className = 'drop-file' + (isSql ? ' sql' : '');
+ const drop = document.getElementById(dropId);
+ drop.className = drop.className.replace(/\bloaded\S*/g, '').trim();
+ drop.classList.add(isSql ? 'loaded-sql' : 'loaded');
+
+ // Show SQL badge if applicable
+ const badgeId = inputId === 'f1' ? 'sql-badge1' : inputId === 'f2' ? 'sql-badge2' : null;
+ if (badgeId) {
+ document.getElementById(badgeId).style.display = isSql ? 'block' : 'none';
+ }
+
+ // Show SQL hint notes
+ if (inputId === 'f1' || inputId === 'f2') {
+ const f1sql = document.getElementById('f1').files[0]?.name.toLowerCase().endsWith('.sql');
+ const f2sql = document.getElementById('f2').files[0]?.name.toLowerCase().endsWith('.sql');
+ document.getElementById('sql-note-consolidate').style.display = (f1sql || f2sql) ? 'block' : 'none';
+ }
+ if (inputId === 'fs') {
+ document.getElementById('sql-note-single').style.display = isSql ? 'block' : 'none';
+ // Hide sheet field for SQL
+ document.getElementById('s-sheet').closest('.field').style.opacity = isSql ? '0.3' : '1';
+ }
 }
 
 function fmt(b) {
-  if (b < 1024) return b + ' B';
-  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
-  return (b/1048576).toFixed(1) + ' MB';
+ if (b < 1024) return b + ' B';
+ if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+ return (b/1048576).toFixed(1) + ' MB';
 }
 
 function dragOver(e, id) { e.preventDefault(); document.getElementById(id).classList.add('over'); }
 function dragLeave(id) { document.getElementById(id).classList.remove('over'); }
 function dropFile(e, inputId) {
-  e.preventDefault();
-  const input = document.getElementById(inputId);
-  input.files = e.dataTransfer.files;
-  const drop = e.currentTarget;
-  drop.classList.remove('over');
-  const labelId = inputId.replace('f','fn');
-  fileChosen(inputId, drop.id, labelId);
+ e.preventDefault();
+ const input = document.getElementById(inputId);
+ input.files = e.dataTransfer.files;
+ const drop = e.currentTarget;
+ drop.classList.remove('over');
+ const labelId = inputId.replace('f','fn');
+ fileChosen(inputId, drop.id, labelId);
 }
 
-// ── Wizard helpers ─────────────────────────────────
 function setStep(n) {
-  for (let i = 1; i <= 4; i++) {
-    const c = document.getElementById('sc' + i);
-    const l = document.getElementById('sl' + i);
-    if (i < n) { c.className = 'step-circle done'; c.textContent = '✓'; }
-    else if (i === n) { c.className = 'step-circle active'; c.textContent = i; l.className = 'step-label active'; }
-    else { c.className = 'step-circle'; c.textContent = i; l.className = 'step-label'; }
-  }
+ for (let i = 1; i <= 4; i++) {
+ const c = document.getElementById('sc' + i);
+ const l = document.getElementById('sl' + i);
+ if (i < n) { c.className = 'step-circle done'; c.textContent = ''; }
+ else if (i === n) { c.className = 'step-circle active'; c.textContent = i; l.className = 'step-label active'; }
+ else { c.className = 'step-circle'; c.textContent = i; l.className = 'step-label'; }
+ }
 }
 
 function resetWizard() {
-  document.getElementById('step-upload').style.display = '';
-  document.getElementById('step-analyze').classList.remove('show');
-  document.getElementById('cons-result').classList.remove('show');
-  setStep(1);
-  analysisData = null;
+ document.getElementById('step-upload').style.display = '';
+ document.getElementById('step-analyze').classList.remove('show');
+ document.getElementById('cons-result').classList.remove('show');
+ setStep(1);
+ analysisData = null;
 }
 
 function setJoin(btn, type) {
-  joinType = type;
-  document.querySelectorAll('.join-type-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  if (sqlVisible) updateSQLPreview();
+ joinType = type;
+ document.querySelectorAll('.join-type-btn').forEach(b => b.classList.remove('active'));
+ btn.classList.add('active');
+ if (sqlVisible) updateSQLPreview();
 }
 
 function toggleSQL() {
-  sqlVisible = !sqlVisible;
-  const box = document.getElementById('sql-preview');
-  if (sqlVisible) { updateSQLPreview(); box.classList.add('show'); }
-  else box.classList.remove('show');
+ sqlVisible = !sqlVisible;
+ const box = document.getElementById('sql-preview');
+ if (sqlVisible) { updateSQLPreview(); box.classList.add('show'); }
+ else box.classList.remove('show');
 }
 
 function updateSQLPreview() {
-  if (!analysisData) return;
-  const jc = document.getElementById('join-col').value;
-  const rn = document.getElementById('result-name').value || 'consolidated_data';
-  const t1 = analysisData.table1.name, t2 = analysisData.table2.name;
-  const sql =
-    `<span class="sql-kw">CREATE OR REPLACE VIEW</span> <span class="sql-name">"${rn}"</span> <span class="sql-kw">AS</span>\n` +
-    `<span class="sql-kw">SELECT</span>\n` +
-    `    a.<span class="sql-name">*</span>,\n` +
-    `    b.<span class="sql-name">*</span>  <span class="sql-op">-- кроме дублирующихся колонок</span>\n` +
-    `<span class="sql-kw">FROM</span> <span class="sql-name">"${t1}"</span> a\n` +
-    `<span class="sql-kw">${joinType} JOIN</span> <span class="sql-name">"${t2}"</span> b\n` +
-    `    <span class="sql-kw">ON</span> a.<span class="sql-name">"${jc}"</span> <span class="sql-op">=</span> b.<span class="sql-name">"${jc}"</span>;`;
-  document.getElementById('sql-preview').innerHTML = sql;
+ if (!analysisData) return;
+ const jc = document.getElementById('join-col').value;
+ const rn = document.getElementById('result-name').value || 'consolidated_data';
+ const t1 = analysisData.table1.name, t2 = analysisData.table2.name;
+ const sql =
+ `<span class="sql-kw">CREATE OR REPLACE VIEW</span> <span class="sql-name">"${rn}"</span> <span class="sql-kw">AS</span>\n` +
+ `<span class="sql-kw">SELECT</span>\n` +
+ ` a.<span class="sql-name">*</span>,\n` +
+ ` b.<span class="sql-name">*</span> <span class="sql-op">-- кроме дублирующихся колонок</span>\n` +
+ `<span class="sql-kw">FROM</span> <span class="sql-name">"${t1}"</span> a\n` +
+ `<span class="sql-kw">${joinType} JOIN</span> <span class="sql-name">"${t2}"</span> b\n` +
+ ` <span class="sql-kw">ON</span> a.<span class="sql-name">"${jc}"</span> <span class="sql-op">=</span> b.<span class="sql-name">"${jc}"</span>;`;
+ document.getElementById('sql-preview').innerHTML = sql;
 }
 
-// ── API calls ──────────────────────────────────────
 function setLoading(id, on) {
-  const btn = document.getElementById(id);
-  btn.classList.toggle('loading', on);
-  btn.disabled = on;
+ const btn = document.getElementById(id);
+ btn.classList.toggle('loading', on);
+ btn.disabled = on;
 }
 
 async function doAnalyze() {
-  const f1 = document.getElementById('f1').files[0];
-  const f2 = document.getElementById('f2').files[0];
-  if (!f1 || !f2) { alert('Выберите оба файла'); return; }
+ const f1 = document.getElementById('f1').files[0];
+ const f2 = document.getElementById('f2').files[0];
+ if (!f1 || !f2) { alert('Выберите оба файла'); return; }
 
-  setLoading('analyze-btn', true);
-  const fd = new FormData();
-  fd.append('file1', f1); fd.append('file2', f2);
-  fd.append('table1_name', document.getElementById('t1name').value);
-  fd.append('table2_name', document.getElementById('t2name').value);
+ setLoading('analyze-btn', true);
+ const fd = new FormData();
+ fd.append('file1', f1);
+ fd.append('file2', f2);
+ fd.append('table1_name', document.getElementById('t1name').value);
+ fd.append('table2_name', document.getElementById('t2name').value);
 
-  try {
-    const r = await fetch(API + '/api/consolidate/analyze', { method: 'POST', body: fd });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.detail || JSON.stringify(d));
-    analysisData = d;
-    renderAnalysis(d);
-    document.getElementById('step-upload').style.display = 'none';
-    document.getElementById('step-analyze').classList.add('show');
-    setStep(2);
-  } catch(e) {
-    alert('Ошибка: ' + e.message);
-  } finally {
-    setLoading('analyze-btn', false);
-  }
+ try {
+ const r = await fetch(API + '/api/consolidate/analyze', { method: 'POST', body: fd });
+ const d = await r.json();
+ if (!r.ok) throw new Error(d.detail || JSON.stringify(d));
+
+ analysisData = d;
+ renderAnalysis(d);
+ document.getElementById('step-upload').style.display = 'none';
+ document.getElementById('step-analyze').classList.add('show');
+ setStep(2);
+ } catch(e) {
+ alert('Ошибка: ' + e.message);
+ } finally {
+ setLoading('analyze-btn', false);
+ }
 }
 
 function renderAnalysis(d) {
-  const t1 = d.table1, t2 = d.table2;
-  const common = new Set(d.common_columns);
+ const t1 = d.table1, t2 = d.table2;
+ const common = new Set(d.common_columns);
 
-  const makeList = (title, cols, chip) => {
-    const items = cols.map(c =>
-      `<div class="col-item ${common.has(c) ? 'common' : ''}">
-        <div class="col-dot ${common.has(c) ? 'common' : ''}"></div>${c}
-       </div>`).join('');
-    return `<div class="col-list">
-      <div class="col-list-title">${title} <span class="chip ${chip}">${cols.length} кол.</span></div>
-      ${items}
-    </div>`;
-  };
+ const makeList = (title, cols, chip) => {
+ const items = cols.map(c =>
+ `<div class="col-item ${common.has(c) ? 'common' : ''}">
+ <div class="col-dot ${common.has(c) ? 'common' : ''}"></div>${c}
+ </div>`).join('');
+ return `<div class="col-list">
+ <div class="col-list-title">${title} <span class="chip ${chip}">${cols.length} кол.</span></div>
+ ${items}
+ </div>`;
+ };
 
-  const connector = `<div class="connector-line">
-    ${d.common_columns.map(() => '<div class="connector-dot"></div>').join('')}
-  </div>`;
+ const connector = `<div class="connector-line">
+ ${d.common_columns.map(() => '<div class="connector-dot"></div>').join('')}
+ </div>`;
 
-  document.getElementById('cols-grid').innerHTML =
-    makeList('📄 ' + t1.name, t1.columns, '') + connector +
-    makeList('📄 ' + t2.name, t2.columns, 'green');
+ document.getElementById('cols-grid').innerHTML =
+ makeList('' + t1.name, t1.columns, '') +
+ connector +
+ makeList('' + t2.name, t2.columns, 'green');
 
-  const sel = document.getElementById('join-col');
-  sel.innerHTML = '';
-  if (d.common_columns.length === 0) {
-    sel.innerHTML = '<option value="">— нет общих колонок —</option>';
-  } else {
-    d.common_columns.forEach(c => {
-      const opt = document.createElement('option');
-      opt.value = c;
-      opt.textContent = c + (c === d.suggested_join_column ? ' ✦ рекомендуется' : '');
-      sel.appendChild(opt);
-    });
-    if (d.suggested_join_column) sel.value = d.suggested_join_column;
-  }
+ const sel = document.getElementById('join-col');
+ sel.innerHTML = '';
+ if (d.common_columns.length === 0) {
+ sel.innerHTML = '<option value="">— нет общих колонок —</option>';
+ } else {
+ d.common_columns.forEach(c => {
+ const opt = document.createElement('option');
+ opt.value = c;
+ opt.textContent = c + (c === d.suggested_join_column ? ' рекомендуется' : '');
+ sel.appendChild(opt);
+ });
+ if (d.suggested_join_column) sel.value = d.suggested_join_column;
+ }
 
-  document.getElementById('result-name').value =
-    `consolidated_${t1.name}_${t2.name}`.slice(0, 50);
+ document.getElementById('result-name').value = `consolidated_${t1.name}_${t2.name}`.slice(0, 50);
 }
 
 async function doExecute() {
-  if (!analysisData) return;
-  const jc = document.getElementById('join-col').value;
-  if (!jc) { alert('Нет общих колонок для объединения'); return; }
+ if (!analysisData) return;
+ const jc = document.getElementById('join-col').value;
+ if (!jc) { alert('Нет общих колонок для объединения'); return; }
 
-  setLoading('exec-btn', true);
-  const body = {
-    table1: analysisData.table1.name,
-    table2: analysisData.table2.name,
-    join_column: jc,
-    join_type: joinType,
-    result_name: document.getElementById('result-name').value || 'consolidated_data',
-  };
+ setLoading('exec-btn', true);
+ const body = {
+ table1: analysisData.table1.name,
+ table2: analysisData.table2.name,
+ join_column: jc,
+ join_type: joinType,
+ result_name: document.getElementById('result-name').value || 'consolidated_data',
+ };
 
-  try {
-    const r = await fetch(API + '/api/consolidate/execute', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.detail || JSON.stringify(d));
-    setStep(4);
-    showConsResult(true, d);
-  } catch(e) {
-    showConsResult(false, { error: e.message });
-  } finally {
-    setLoading('exec-btn', false);
-  }
+ try {
+ const r = await fetch(API + '/api/consolidate/execute', {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify(body),
+ });
+ const d = await r.json();
+ if (!r.ok) throw new Error(d.detail || JSON.stringify(d));
+
+ setStep(4);
+ showConsResult(true, d);
+ } catch(e) {
+ showConsResult(false, { error: e.message });
+ } finally {
+ setLoading('exec-btn', false);
+ }
 }
 
 function showConsResult(ok, d) {
-  const panel = document.getElementById('cons-result');
-  panel.className = 'result-panel show ' + (ok ? 'success' : 'error');
-  if (ok) {
-    panel.innerHTML = `
-      <div class="result-title success">✓ Консолидация выполнена успешно</div>
-      <div class="result-stats">
-        <div class="stat"><div class="stat-val">${d.rows.toLocaleString()}</div><div class="stat-label">строк</div></div>
-        <div class="stat"><div class="stat-val">${d.join_type}</div><div class="stat-label">тип JOIN</div></div>
-        <div class="stat"><div class="stat-val">${d.join_column}</div><div class="stat-label">ключ</div></div>
-      </div>
-      <div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px">
-        VIEW: <b style="color:var(--green)">${d.result_view}</b> — ${d.superset}
-      </div>
-      <a href="http://localhost:8088/tablemodelview/list/" target="_blank" class="result-link">
-        Открыть Datasets в Superset и строить чарты
-      </a>`;
-  } else {
-    panel.innerHTML = `<div class="result-title error">✗ Ошибка</div>
-      <div style="font-family:var(--mono);font-size:12px;color:var(--text2)">${d.error}</div>`;
-  }
+ const panel = document.getElementById('cons-result');
+ panel.className = 'result-panel show ' + (ok ? 'success' : 'error');
+
+ if (ok) {
+ panel.innerHTML = `
+ <div class="result-title success">Консолидация выполнена успешно</div>
+ <div class="result-stats">
+ <div class="stat"><div class="stat-val">${d.rows.toLocaleString()}</div><div class="stat-label">строк</div></div>
+ <div class="stat"><div class="stat-val">${d.join_type}</div><div class="stat-label">тип JOIN</div></div>
+ <div class="stat"><div class="stat-val">${d.join_column}</div><div class="stat-label">ключ</div></div>
+ </div>
+ <div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px">
+ VIEW: <b style="color:var(--green)">${d.result_view}</b> — ${d.superset}
+ </div>
+ <a href="http://localhost:8088/tablemodelview/list/" target="_blank" class="result-link">
+ Открыть Datasets в Superset и строить чарты
+ </a>`;
+ } else {
+ panel.innerHTML = `<div class="result-title error"> Ошибка</div>
+ <div style="font-family:var(--mono);font-size:12px;color:var(--text2)">${d.error}</div>`;
+ }
 }
 
 async function doSingle() {
-  const f = document.getElementById('fs').files[0];
-  if (!f) { alert('Выберите файл'); return; }
-  setLoading('single-btn', true);
-  const fd = new FormData();
-  fd.append('file', f);
-  fd.append('table_name', document.getElementById('s-tname').value);
-  fd.append('sheet', document.getElementById('s-sheet').value);
-  try {
-    const r = await fetch(API + '/api/upload', { method: 'POST', body: fd });
-    const d = await r.json();
-    const p = document.getElementById('single-result');
-    if (r.ok) {
-      p.className = 'result-panel show success';
-      p.innerHTML = `<div class="result-title success">✓ Загружено</div>
-        <div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px">
-          Таблица: <b>${d.table}</b> · ${d.rows} строк · ${d.columns.length} колонок
-        </div>
-        <a href="http://localhost:8088/tablemodelview/list/" target="_blank" class="result-link">Открыть в Superset</a>`;
-    } else {
-      p.className = 'result-panel show error';
-      p.innerHTML = `<div class="result-title error">✗ Ошибка</div><div style="font-family:var(--mono);font-size:11px">${d.detail}</div>`;
-    }
-  } catch(e) {
-    const p = document.getElementById('single-result');
-    p.className = 'result-panel show error';
-    p.innerHTML = `<div class="result-title error">✗ Ошибка соединения</div><div style="font-family:var(--mono);font-size:11px">${e.message}</div>`;
-  } finally {
-    setLoading('single-btn', false);
-  }
+ const f = document.getElementById('fs').files[0];
+ if (!f) { alert('Выберите файл'); return; }
+ setLoading('single-btn', true);
+ const fd = new FormData();
+ fd.append('file', f);
+ fd.append('table_name', document.getElementById('s-tname').value);
+ fd.append('sheet', document.getElementById('s-sheet').value);
+ try {
+ const r = await fetch(API + '/api/upload', { method: 'POST', body: fd });
+ const d = await r.json();
+ const p = document.getElementById('single-result');
+ if (r.ok) {
+ p.className = 'result-panel show success';
+
+ // SQL dumps may load multiple tables — show them all
+ if (d.sql_tables_loaded && d.sql_tables_loaded > 1) {
+ const tableRows = d.tables.map(t =>
+ `<div class="sql-table-row">
+ <span class="sql-table-name">${t.table}</span>
+ <span class="sql-table-meta">${t.rows} строк · ${t.columns.length} кол.</span>
+ </div>`
+ ).join('');
+ p.innerHTML = `
+ <div class="result-title success"> SQL-дамп загружен</div>
+ <div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:12px">
+ Загружено таблиц: <b style="color:var(--green)">${d.sql_tables_loaded}</b>
+ </div>
+ <div class="sql-tables-list">${tableRows}</div>
+ <a href="http://localhost:8088/tablemodelview/list/" target="_blank" class="result-link" style="margin-top:4px">Открыть в Superset</a>`;
+ } else {
+ p.innerHTML = `<div class="result-title success"> Загружено</div>
+ <div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px">
+ Таблица: <b>${d.table}</b> · ${d.rows} строк · ${d.columns.length} колонок
+ </div>
+ <a href="http://localhost:8088/tablemodelview/list/" target="_blank" class="result-link">Открыть в Superset</a>`;
+ }
+ } else {
+ p.className = 'result-panel show error';
+ p.innerHTML = `<div class="result-title error"> Ошибка</div><div style="font-family:var(--mono);font-size:11px">${d.detail}</div>`;
+ }
+ } catch(e) {
+ const p = document.getElementById('single-result');
+ p.className = 'result-panel show error';
+ p.innerHTML = `<div class="result-title error"> Ошибка соединения</div><div style="font-family:var(--mono);font-size:11px">${e.message}</div>`;
+ } finally {
+ setLoading('single-btn', false);
+ }
 }
 
 async function doConnect() {
-  const fields = ['db-host','db-port','db-dbname','db-user'];
-  if (fields.some(f => !document.getElementById(f).value.trim())) {
-    alert('Заполните все обязательные поля'); return;
-  }
-  setLoading('db-btn', true);
-  const fd = new FormData();
-  fd.append('db_type', document.getElementById('db-type').value);
-  fd.append('host', document.getElementById('db-host').value);
-  fd.append('port', document.getElementById('db-port').value);
-  fd.append('database', document.getElementById('db-dbname').value);
-  fd.append('username', document.getElementById('db-user').value);
-  fd.append('password', document.getElementById('db-pass').value);
-  fd.append('connection_name', document.getElementById('db-cname').value);
-  try {
-    const r = await fetch(API + '/api/connect/database', { method: 'POST', body: fd });
-    const d = await r.json();
-    const p = document.getElementById('db-result');
-    if (r.ok) {
-      p.className = 'result-panel show success';
-      p.innerHTML = `<div class="result-title success">✓ Подключено</div>
-        <div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px">
-          ${d.connection_name} — ${d.superset}
-        </div>
-        <a href="http://localhost:8088/databaseview/list/" target="_blank" class="result-link">↗ Открыть подключения в Superset</a>`;
-    } else {
-      p.className = 'result-panel show error';
-      p.innerHTML = `<div class="result-title error">✗ Ошибка</div><div style="font-family:var(--mono);font-size:11px">${d.detail}</div>`;
-    }
-  } catch(e) {
-    const p = document.getElementById('db-result');
-    p.className = 'result-panel show error';
-    p.innerHTML = `<div class="result-title error">✗ Ошибка соединения</div><div style="font-family:var(--mono);font-size:11px">${e.message}</div>`;
-  } finally {
-    setLoading('db-btn', false);
-  }
+ const fields = ['db-host','db-port','db-dbname','db-user'];
+ if (fields.some(f => !document.getElementById(f).value.trim())) {
+ alert('Заполните все обязательные поля'); return;
+ }
+ setLoading('db-btn', true);
+ const fd = new FormData();
+ fd.append('db_type', document.getElementById('db-type').value);
+ fd.append('host', document.getElementById('db-host').value);
+ fd.append('port', document.getElementById('db-port').value);
+ fd.append('database', document.getElementById('db-dbname').value);
+ fd.append('username', document.getElementById('db-user').value);
+ fd.append('password', document.getElementById('db-pass').value);
+ fd.append('connection_name', document.getElementById('db-cname').value);
+ try {
+ const r = await fetch(API + '/api/connect/database', { method: 'POST', body: fd });
+ const d = await r.json();
+ const p = document.getElementById('db-result');
+ if (r.ok) {
+ p.className = 'result-panel show success';
+ p.innerHTML = `<div class="result-title success"> Подключено</div>
+ <div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px">
+ ${d.connection_name} — ${d.superset}
+ </div>
+ <a href="http://localhost:8088/databaseview/list/" target="_blank" class="result-link">Открыть подключения в Superset</a>`;
+ } else {
+ p.className = 'result-panel show error';
+ p.innerHTML = `<div class="result-title error"> Ошибка</div><div style="font-family:var(--mono);font-size:11px">${d.detail}</div>`;
+ }
+ } catch(e) {
+ const p = document.getElementById('db-result');
+ p.className = 'result-panel show error';
+ p.innerHTML = `<div class="result-title error"> Ошибка соединения</div><div style="font-family:var(--mono);font-size:11px">${e.message}</div>`;
+ } finally {
+ setLoading('db-btn', false);
+ }
 }
 
 async function loadTables() {
-  const el = document.getElementById('tlist');
-  el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>';
-  try {
-    const r = await fetch(API + '/api/tables');
-    const d = await r.json();
-    if (!d.tables.length) {
-      el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Таблиц пока нет</div>';
-      return;
-    }
-    el.innerHTML = d.tables.map(t =>
-      `<div class="tlist-item">
-        <span class="tlist-name">
-          <span style="color:var(--text3)">${t.type === 'view' ? '👁' : '📋'}</span> ${t.name}
-        </span>
-        <span class="tlist-size">${t.size}</span>
-      </div>`).join('');
-  } catch(e) {
-    el.innerHTML = `<div style="color:var(--red);font-family:var(--mono);font-size:11px">Ошибка: ${e.message}</div>`;
-  }
-}
-
-// ── История консолидаций ────────────────────────────
-async function loadHistory() {
-  const el = document.getElementById('history-container');
-  el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>';
-  try {
-    const r = await fetch(API + '/api/consolidation/history?limit=50');
-    const d = await r.json();
-    if (!d.history.length) {
-      el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px;padding:8px 0">Операций консолидации ещё не было</div>';
-      return;
-    }
-    el.innerHTML = '<div class="history-list">' +
-      d.history.map((rec, i) => renderHistoryItem(rec, i)).join('') +
-    '</div>';
-  } catch(e) {
-    el.innerHTML = `<div style="color:var(--red);font-family:var(--mono);font-size:11px">Ошибка: ${e.message}</div>`;
-  }
-}
-
-function renderHistoryItem(rec, i) {
-  const dt = new Date(rec.created_at);
-  const when = dt.toLocaleString('ru-RU', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
-  const isOk = rec.status === 'success';
-  const chipCls = isOk ? 'green' : 'red';
-  const statusLabel = isOk ? '✓ успех' : '✗ ошибка';
-
-  const sqlEscaped = (rec.sql_text || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-  return `
-  <div class="history-item status-${rec.status}" onclick="toggleHistoryDetail(${i})">
-    <div class="history-header">
-      <div>
-        <div class="history-view">👁 ${rec.result_view}</div>
-        <div class="history-flow">
-          <span class="history-tbl">📋 ${rec.source_table_1}</span>
-          <span class="history-arrow">+</span>
-          <span class="history-tbl">📋 ${rec.source_table_2}</span>
-          <span class="history-arrow">→</span>
-          <span style="color:var(--blue2);font-family:var(--mono);font-size:11px">${rec.result_schema}.${rec.result_view}</span>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-        <span class="chip ${chipCls}">${statusLabel}</span>
-        <span class="history-when">${when}</span>
-      </div>
-    </div>
-
-    <div class="history-meta">
-      <span class="chip">${rec.join_type} JOIN</span>
-      <span style="font-family:var(--mono);font-size:10px;color:var(--text2)">по: <b>${rec.join_column}</b></span>
-      ${rec.row_count != null ? `<span style="font-family:var(--mono);font-size:10px;color:var(--text3)">${rec.row_count.toLocaleString()} строк</span>` : ''}
-      ${rec.columns_count != null ? `<span style="font-family:var(--mono);font-size:10px;color:var(--text3)">${rec.columns_count} колонок</span>` : ''}
-    </div>
-
-    <div class="history-detail" id="hd-${i}">
-      <div class="history-detail-grid">
-        <div class="detail-cell">
-          <div class="detail-cell-label">Источник 1 (откуда)</div>
-          <div class="detail-cell-val">${rec.source_schema}.${rec.source_table_1}</div>
-        </div>
-        <div class="detail-cell">
-          <div class="detail-cell-label">Источник 2 (откуда)</div>
-          <div class="detail-cell-val">${rec.source_schema}.${rec.source_table_2}</div>
-        </div>
-        <div class="detail-cell">
-          <div class="detail-cell-label">Результат (куда)</div>
-          <div class="detail-cell-val">${rec.result_schema}.${rec.result_view}</div>
-        </div>
-        <div class="detail-cell">
-          <div class="detail-cell-label">Поле объединения</div>
-          <div class="detail-cell-val">${rec.join_column}</div>
-        </div>
-        <div class="detail-cell">
-          <div class="detail-cell-label">Тип JOIN</div>
-          <div class="detail-cell-val">${rec.join_type}</div>
-        </div>
-        <div class="detail-cell">
-          <div class="detail-cell-label">Выполнено (когда)</div>
-          <div class="detail-cell-val">${when}</div>
-        </div>
-        ${rec.row_count != null ? `<div class="detail-cell"><div class="detail-cell-label">Строк в результате</div><div class="detail-cell-val">${rec.row_count.toLocaleString()}</div></div>` : ''}
-        ${rec.columns_count != null ? `<div class="detail-cell"><div class="detail-cell-label">Колонок</div><div class="detail-cell-val">${rec.columns_count}</div></div>` : ''}
-        <div class="detail-cell">
-          <div class="detail-cell-label">Superset</div>
-          <div class="detail-cell-val">${rec.superset_status || '—'}</div>
-        </div>
-        ${rec.error_message ? `<div class="detail-cell" style="grid-column:1/-1;border-color:rgba(239,68,68,.3)"><div class="detail-cell-label" style="color:var(--red)">Ошибка</div><div class="detail-cell-val" style="color:var(--red)">${rec.error_message}</div></div>` : ''}
-      </div>
-      ${sqlEscaped ? `
-      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:6px;text-transform:uppercase;letter-spacing:.8px">SQL VIEW (аудит)</div>
-      <div class="history-sql">${sqlEscaped}</div>` : ''}
-    </div>
-  </div>`;
-}
-
-function toggleHistoryDetail(i) {
-  const el = document.getElementById('hd-' + i);
-  el.classList.toggle('open');
+ const el = document.getElementById('tlist');
+ el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>';
+ try {
+ const r = await fetch(API + '/api/tables');
+ const d = await r.json();
+ if (!d.tables.length) {
+ el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Таблиц пока нет</div>';
+ return;
+ }
+ el.innerHTML = d.tables.map(t =>
+ `<div class="tlist-item">
+ <span class="tlist-name">
+ <span style="color:var(--text3)">${t.type === 'view' ? '' : ''}</span> ${t.name}
+ </span>
+ <span class="tlist-size">${t.size}</span>
+ </div>`).join('');
+ } catch(e) {
+ el.innerHTML = `<div style="color:var(--red);font-family:var(--mono);font-size:11px">Ошибка: ${e.message}</div>`;
+ }
 }
 
 function autoPort() {
-  document.getElementById('db-port').value =
-    document.getElementById('db-type').value === 'postgresql' ? '5432' : '3306';
+ document.getElementById('db-port').value =
+ document.getElementById('db-type').value === 'postgresql' ? '5432' : '3306';
 }
 </script>
 </body>

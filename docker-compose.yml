@@ -163,6 +163,8 @@ services:
         superset db upgrade &&
         superset fab create-admin --username admin --firstname Admin --lastname User --email admin@superset.com --password admin &&
         superset init &&
+        superset set_database_uri -d sales_db -u postgresql+psycopg2://pguser:pgpassword@postgres:5432/sales_db ||
+        echo "sales_db connection already exists" &&
         superset run -h 0.0.0.0 -p 8088
     networks:
       - diploma_net

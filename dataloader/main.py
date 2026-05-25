@@ -8,6 +8,8 @@ import requests
 import io
 import os
 import re
+import sqlparse
+from sqlparse.sql import Values
 
 app = FastAPI(title="DataBridge API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -65,9 +67,59 @@ def get_engine():
     )
 
 def df_to_postgres(df, table_name):
+    """
+    Загружает DataFrame в PostgreSQL.
+    Если таблица уже используется во VIEW — сначала удаляем зависимые VIEW,
+    затем пересоздаём таблицу, затем восстанавливаем VIEW.
+    """
     engine = get_engine()
+    conn = pg_connect()
+    try:
+        cur = conn.cursor()
+
+        # Находим все VIEW которые зависят от этой таблицы
+        cur.execute("""
+            SELECT DISTINCT v.table_name
+            FROM information_schema.view_column_usage v
+            WHERE v.table_name != %s
+              AND v.view_name IN (
+                SELECT table_name FROM information_schema.views
+                WHERE table_schema = 'public'
+              )
+              AND v.table_name = %s
+        """, (table_name, table_name))
+
+        # Правильный запрос — ищем VIEW которые ссылаются на нашу таблицу
+        cur.execute("""
+            SELECT table_name, view_definition
+            FROM information_schema.views
+            WHERE table_schema = 'public'
+              AND view_definition ILIKE %s
+        """, (f'%"{table_name}"%',))
+        dependent_views = cur.fetchall()
+
+        # Дропаем зависимые VIEW
+        for view_name, view_def in dependent_views:
+            cur.execute(f'DROP VIEW IF EXISTS "{view_name}" CASCADE')
+
+        conn.commit()
+    finally:
+        conn.close()
+
+    # Теперь безопасно перезаписываем таблицу
     df.to_sql(table_name, engine, if_exists='replace', index=False, method='multi', chunksize=500)
     engine.dispose()
+
+    # Восстанавливаем VIEW
+    if dependent_views:
+        conn2 = pg_connect()
+        try:
+            cur2 = conn2.cursor()
+            for view_name, view_def in dependent_views:
+                cur2.execute(f'CREATE OR REPLACE VIEW "{view_name}" AS {view_def}')
+            conn2.commit()
+        finally:
+            conn2.close()
 
 def read_uploaded(content, filename, sheet=0):
     if filename.endswith('.csv'):
@@ -77,7 +129,224 @@ def read_uploaded(content, filename, sheet=0):
         try: sheet = int(sheet)
         except: pass
         return pd.read_excel(io.BytesIO(content), sheet_name=sheet)
+    elif filename.endswith('.sql'):
+        return read_sql_file(content)
     raise HTTPException(400, f"Неподдерживаемый формат: {filename}")
+
+def _unquote(s: str) -> str:
+    """Strip surrounding quotes (single, double, backtick) from a token."""
+    s = s.strip()
+    if len(s) >= 2 and s[0] in ('"', "'", '`') and s[-1] == s[0]:
+        return s[1:-1]
+    return s
+
+def _parse_value_token(token: str):
+    """Convert a raw SQL token string to a Python value."""
+    t = token.strip()
+    if t.upper() in ('NULL', 'DEFAULT'):
+        return None
+    # Boolean literals
+    if t.upper() == 'TRUE':
+        return True
+    if t.upper() == 'FALSE':
+        return False
+    # Quoted string
+    if len(t) >= 2 and t[0] == "'" and t[-1] == "'":
+        return t[1:-1].replace("''", "'").replace("\\'", "'")
+    if len(t) >= 2 and t[0] == '"' and t[-1] == '"':
+        return t[1:-1].replace('""', '"')
+    # Numeric
+    try:
+        return int(t)
+    except ValueError:
+        pass
+    try:
+        return float(t)
+    except ValueError:
+        pass
+    return t  # fallback: return as-is
+
+def _split_values_list(s: str) -> list:
+    """
+    Split a comma-separated VALUES list respecting parentheses and quotes.
+    Input example: "1, 'hello', NULL, (1+2)"
+    Returns list of raw token strings.
+    """
+    tokens = []
+    depth = 0
+    current = []
+    in_single = False
+    in_double = False
+    i = 0
+    while i < len(s):
+        ch = s[i]
+        # Toggle quote states (simple – doesn't handle escaped quotes perfectly but good enough)
+        if ch == "'" and not in_double:
+            in_single = not in_single
+        elif ch == '"' and not in_single:
+            in_double = not in_double
+        if not in_single and not in_double:
+            if ch == '(':
+                depth += 1
+            elif ch == ')':
+                depth -= 1
+            elif ch == ',' and depth == 0:
+                tokens.append(''.join(current).strip())
+                current = []
+                i += 1
+                continue
+        current.append(ch)
+        i += 1
+    if current:
+        tokens.append(''.join(current).strip())
+    return tokens
+
+def _extract_row_groups(values_clause: str) -> list[str]:
+    """
+    Extract individual (…) row groups from a VALUES clause string.
+    Handles multi-row inserts like: (1,'a'), (2,'b'), …
+    """
+    groups = []
+    depth = 0
+    start = None
+    in_single = False
+    in_double = False
+    for i, ch in enumerate(values_clause):
+        if ch == "'" and not in_double:
+            in_single = not in_single
+        elif ch == '"' and not in_single:
+            in_double = not in_double
+        if in_single or in_double:
+            continue
+        if ch == '(' and depth == 0:
+            depth = 1
+            start = i + 1
+        elif ch == '(':
+            depth += 1
+        elif ch == ')':
+            depth -= 1
+            if depth == 0 and start is not None:
+                groups.append(values_clause[start:i])
+                start = None
+    return groups
+
+def read_sql_file(content: bytes) -> dict[str, pd.DataFrame]:
+    """
+    Parse a SQL dump file and return a dict of {table_name: DataFrame}.
+
+    Handles:
+    - CREATE TABLE statements (for column names)
+    - INSERT INTO … VALUES … (single and multi-row)
+    - MySQL-style backtick quoting
+    - Standard double-quote and single-quote identifiers
+    - Comments (-- and /* */)
+    - Encoding: UTF-8 with cp1251 fallback
+    """
+    try:
+        text = content.decode('utf-8')
+    except UnicodeDecodeError:
+        text = content.decode('cp1251')
+
+    # Strip block comments
+    text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+    # Strip line comments
+    text = re.sub(r'--[^\n]*', '', text)
+
+    # ── 1. Parse CREATE TABLE for column names ──────────────────────────
+    table_columns: dict[str, list[str]] = {}
+
+    # Pattern: CREATE TABLE [IF NOT EXISTS] `name` | "name" | name ( … )
+    create_pattern = re.compile(
+        r'CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?'
+        r'([`"\[]?[\w\u0400-\u04FF]+[`"\]]?)'   # table name (ASCII + Cyrillic)
+        r'\s*\((.*?)\)\s*(?:ENGINE|DEFAULT|;|$)',
+        re.IGNORECASE | re.DOTALL,
+    )
+
+    for m in create_pattern.finditer(text):
+        tname = clean_name(_unquote(m.group(1)))
+        body = m.group(2)
+        cols = []
+        for line in body.split('\n'):
+            line = line.strip().rstrip(',')
+            if not line:
+                continue
+            # Skip constraints / indexes
+            upper = line.upper()
+            if any(upper.startswith(kw) for kw in (
+                'PRIMARY', 'UNIQUE', 'KEY', 'INDEX', 'CONSTRAINT',
+                'FOREIGN', 'CHECK', 'FULLTEXT', 'SPATIAL',
+            )):
+                continue
+            # First token is the column name
+            col_match = re.match(r'^([`"\[]?[\w\u0400-\u04FF]+[`"\]]?)', line)
+            if col_match:
+                cols.append(clean_name(_unquote(col_match.group(1))))
+        if cols:
+            table_columns[tname] = cols
+
+    # ── 2. Parse INSERT statements ──────────────────────────────────────
+    table_rows: dict[str, list] = {}
+    table_explicit_cols: dict[str, list[str]] = {}
+
+    # Regex to capture: INSERT INTO <table> [( col_list )] VALUES ...;
+    insert_pattern = re.compile(
+        r'INSERT\s+INTO\s+([`"\[]?[\w\u0400-\u04FF]+[`"\]]?)'
+        r'(?:\s*\(([^)]+)\))?\s*VALUES\s*(.*?)(?=;|\Z)',
+        re.IGNORECASE | re.DOTALL,
+    )
+
+    for m in insert_pattern.finditer(text):
+        tname = clean_name(_unquote(m.group(1)))
+        explicit_cols_raw = m.group(2)
+        values_str = m.group(3).strip()
+
+        # Explicit column list
+        if explicit_cols_raw:
+            ecols = [clean_name(_unquote(c.strip())) for c in explicit_cols_raw.split(',')]
+            table_explicit_cols.setdefault(tname, ecols)
+
+        # Extract all row groups (…)
+        row_groups = _extract_row_groups(values_str)
+        if tname not in table_rows:
+            table_rows[tname] = []
+
+        for group in row_groups:
+            raw_tokens = _split_values_list(group)
+            row = [_parse_value_token(t) for t in raw_tokens]
+            table_rows[tname].append(row)
+
+    # ── 3. Build DataFrames ─────────────────────────────────────────────
+    if not table_rows:
+        raise HTTPException(400, "SQL-файл не содержит INSERT-данных. Убедитесь, что файл является дампом с INSERT INTO … VALUES …")
+
+    result: dict[str, pd.DataFrame] = {}
+
+    for tname, rows in table_rows.items():
+        # Determine columns: explicit > CREATE TABLE > auto-generated
+        if tname in table_explicit_cols:
+            cols = table_explicit_cols[tname]
+        elif tname in table_columns:
+            cols = table_columns[tname]
+        else:
+            # Auto-generate col_1, col_2, …
+            max_len = max(len(r) for r in rows)
+            cols = [f'col_{i+1}' for i in range(max_len)]
+
+        # Pad / trim rows to match column count
+        ncols = len(cols)
+        padded = []
+        for row in rows:
+            if len(row) < ncols:
+                row = row + [None] * (ncols - len(row))
+            elif len(row) > ncols:
+                row = row[:ncols]
+            padded.append(row)
+
+        df = pd.DataFrame(padded, columns=cols)
+        result[tname] = df
+
+    return result
 
 def pg_connect():
     return psycopg2.connect(
@@ -95,23 +364,9 @@ def superset_db_id(token):
     r = requests.get(f"{SUPERSET_URL}/api/v1/database/",
         headers={"Authorization": f"Bearer {token}"}, timeout=10)
     r.raise_for_status()
-    databases = r.json().get("result", [])
-    
-    # Логируем что реально вернул Superset — смотри в docker logs diploma_dataloader
-    import logging
-    for db in databases:
-        logging.warning(f"Superset DB: id={db.get('id')} name={db.get('database_name')} uri={db.get('sqlalchemy_uri','—')}")
-    
-    for db in databases:
-        uri = db.get("sqlalchemy_uri", "") or ""
-        name = db.get("database_name", "") or ""
-        if "postgresql" in uri or "trino" in uri or "postgres" in name.lower():
+    for db in r.json().get("result", []):
+        if "postgresql" in db.get("sqlalchemy_uri","") or "trino" in db.get("sqlalchemy_uri",""):
             return db["id"]
-    
-    # Если одна БД — берём её
-    if len(databases) == 1:
-        return databases[0]["id"]
-        
     raise HTTPException(404, "Не найдено подключение PostgreSQL/Trino в Superset")
 
 def register_in_superset(token, table_name):
@@ -132,86 +387,6 @@ def get_table_columns(table_name):
     conn.close()
     return [{"name": r[0], "type": r[1]} for r in rows]
 
-
-# ── Метаданные консолидации ───────────────────────────────────────────────────
-
-def ensure_consolidation_log():
-    """Создаём таблицу метаданных, если она ещё не существует.
-    Нужно на случай, если init-скрипт не был запущен (dev-среда)."""
-    conn = pg_connect()
-    try:
-        cur = conn.cursor()
-        cur.execute("""
-            CREATE TABLE IF NOT EXISTS consolidation_log (
-                id              SERIAL PRIMARY KEY,
-                source_table_1  VARCHAR(100) NOT NULL,
-                source_table_2  VARCHAR(100) NOT NULL,
-                source_schema   VARCHAR(50)  NOT NULL DEFAULT 'public',
-                join_column     VARCHAR(100) NOT NULL,
-                join_type       VARCHAR(20)  NOT NULL,
-                result_view     VARCHAR(100) NOT NULL,
-                result_schema   VARCHAR(50)  NOT NULL DEFAULT 'public',
-                row_count       INTEGER,
-                columns_count   INTEGER,
-                sql_text        TEXT,
-                status          VARCHAR(20)  NOT NULL DEFAULT 'success',
-                error_message   TEXT,
-                created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
-                superset_status VARCHAR(100)
-            );
-            CREATE INDEX IF NOT EXISTS idx_consolidation_log_created_at
-                ON consolidation_log (created_at DESC);
-            CREATE INDEX IF NOT EXISTS idx_consolidation_log_result_view
-                ON consolidation_log (result_view);
-        """)
-        conn.commit()
-    finally:
-        conn.close()
-
-
-def write_consolidation_log(
-    source_table_1: str,
-    source_table_2: str,
-    join_column: str,
-    join_type: str,
-    result_view: str,
-    row_count: int | None,
-    columns_count: int | None,
-    sql_text: str,
-    status: str = "success",
-    error_message: str | None = None,
-    superset_status: str | None = None,
-):
-    """Записывает метаданные одной операции консолидации."""
-    ensure_consolidation_log()
-    conn = pg_connect()
-    try:
-        cur = conn.cursor()
-        cur.execute("""
-            INSERT INTO consolidation_log
-                (source_table_1, source_table_2, source_schema,
-                 join_column, join_type,
-                 result_view, result_schema,
-                 row_count, columns_count, sql_text,
-                 status, error_message, superset_status)
-            VALUES
-                (%s, %s, 'public',
-                 %s, %s,
-                 %s, 'public',
-                 %s, %s, %s,
-                 %s, %s, %s)
-        """, (
-            source_table_1, source_table_2,
-            join_column, join_type,
-            result_view,
-            row_count, columns_count, sql_text,
-            status, error_message, superset_status,
-        ))
-        conn.commit()
-    finally:
-        conn.close()
-
-
 # ── API ───────────────────────────────────────────────
 
 @app.get("/health")
@@ -224,6 +399,33 @@ async def upload(
     sheet: str = Form(default="0"),
 ):
     content = await file.read()
+
+    # SQL files may return multiple tables
+    if file.filename.endswith('.sql'):
+        dfs = read_sql_file(content)
+        if not dfs:
+            raise HTTPException(400, "SQL-файл не содержит данных")
+
+        loaded = []
+        for raw_tname, df in dfs.items():
+            if df.empty:
+                continue
+            # If user provided a custom name and there's only one table, use it
+            tname = (clean_name(table_name.strip()) or raw_tname)[:50] if len(dfs) == 1 and table_name.strip() else raw_tname
+            df.columns = clean_columns(df.columns)
+            df_to_postgres(df, tname)
+            loaded.append({"table": tname, "rows": len(df), "columns": list(df.columns)})
+
+        return {
+            "status": "ok",
+            "sql_tables_loaded": len(loaded),
+            "tables": loaded,
+            # Keep backward-compat fields using first table
+            "table": loaded[0]["table"],
+            "rows": loaded[0]["rows"],
+            "columns": loaded[0]["columns"],
+        }
+
     df = read_uploaded(content, file.filename, sheet)
     if df.empty: raise HTTPException(400, "Файл пустой")
     tname = table_name.strip() or clean_table_name(file.filename)
@@ -241,16 +443,35 @@ async def analyze(
     sheet2: str = Form(default="0"),
 ):
     c1, c2 = await file1.read(), await file2.read()
-    df1 = read_uploaded(c1, file1.filename, sheet1)
-    df2 = read_uploaded(c2, file2.filename, sheet2)
+
+    # ── Handle SQL files (may contain multiple tables; use first one) ──
+    def load_file(content, filename, sheet, name_override):
+        if filename.endswith('.sql'):
+            dfs = read_sql_file(content)
+            if not dfs:
+                raise HTTPException(400, f"SQL-файл {filename} не содержит данных")
+            # Load all tables from the SQL dump to postgres, return the first
+            for raw_tname, df in dfs.items():
+                if not df.empty:
+                    tname = (clean_name(name_override.strip()) or raw_tname)[:50] if len(dfs) == 1 and name_override.strip() else raw_tname
+                    df.columns = clean_columns(df.columns)
+                    df_to_postgres(df, tname)
+            first_name = list(dfs.keys())[0]
+            first_df = dfs[first_name]
+            first_df.columns = clean_columns(first_df.columns)
+            tname_out = (clean_name(name_override.strip()) or first_name)[:50] if len(dfs) == 1 and name_override.strip() else first_name
+            return first_df, tname_out
+        else:
+            df = read_uploaded(content, filename, sheet)
+            tname = name_override.strip() or clean_table_name(filename)
+            df.columns = clean_columns(df.columns)
+            return df, tname
+
+    df1, t1 = load_file(c1, file1.filename, sheet1, table1_name)
+    df2, t2 = load_file(c2, file2.filename, sheet2, table2_name)
+
     if df1.empty or df2.empty: raise HTTPException(400, "Один из файлов пустой")
-
-    t1 = table1_name.strip() or clean_table_name(file1.filename)
-    t2 = table2_name.strip() or clean_table_name(file2.filename)
     if t1 == t2: t2 += "_2"
-
-    df1.columns = clean_columns(df1.columns)
-    df2.columns = clean_columns(df2.columns)
 
     df_to_postgres(df1, t1)
     df_to_postgres(df2, t2)
@@ -302,8 +523,6 @@ async def execute(body: dict):
     )
 
     conn = pg_connect()
-    row_count = None
-    columns_count = len(select_parts)
     try:
         cur = conn.cursor()
         cur.execute(view_sql)
@@ -312,19 +531,6 @@ async def execute(body: dict):
         row_count = cur.fetchone()[0]
     except Exception as e:
         conn.rollback()
-        # Пишем ошибку в лог метаданных перед тем, как бросить исключение
-        write_consolidation_log(
-            source_table_1=table1,
-            source_table_2=table2,
-            join_column=join_column,
-            join_type=join_type,
-            result_view=result_name,
-            row_count=None,
-            columns_count=None,
-            sql_text=view_sql,
-            status="error",
-            error_message=str(e),
-        )
         raise HTTPException(500, f"Ошибка VIEW: {e}")
     finally:
         conn.close()
@@ -337,20 +543,6 @@ async def execute(body: dict):
     except Exception as e:
         superset_ok = f"VIEW создан, Superset: {e}"
 
-    # ── Записываем метаданные успешной консолидации ──
-    write_consolidation_log(
-        source_table_1=table1,
-        source_table_2=table2,
-        join_column=join_column,
-        join_type=join_type,
-        result_view=result_name,
-        row_count=row_count,
-        columns_count=columns_count,
-        sql_text=view_sql,
-        status="success",
-        superset_status=superset_ok,
-    )
-
     return {
         "status": "ok",
         "result_view": result_name,
@@ -361,51 +553,6 @@ async def execute(body: dict):
         "superset": superset_ok,
         "superset_url": f"{SUPERSET_URL}/tablemodelview/list/",
     }
-
-
-@app.get("/api/consolidation/history")
-def consolidation_history(limit: int = 50):
-    """Возвращает историю операций консолидации из таблицы метаданных."""
-    ensure_consolidation_log()
-    conn = pg_connect()
-    try:
-        cur = conn.cursor()
-        cur.execute("""
-            SELECT
-                id,
-                source_table_1,
-                source_table_2,
-                source_schema,
-                join_column,
-                join_type,
-                result_view,
-                result_schema,
-                row_count,
-                columns_count,
-                sql_text,
-                status,
-                error_message,
-                created_at,
-                superset_status
-            FROM consolidation_log
-            ORDER BY created_at DESC
-            LIMIT %s
-        """, (limit,))
-        rows = cur.fetchall()
-        cols = [d[0] for d in cur.description]
-    finally:
-        conn.close()
-
-    records = []
-    for row in rows:
-        rec = dict(zip(cols, row))
-        # datetime → ISO-строка для JSON
-        if rec.get("created_at"):
-            rec["created_at"] = rec["created_at"].isoformat()
-        records.append(rec)
-
-    return {"history": records, "total": len(records)}
-
 
 @app.post("/api/connect/database")
 async def connect_db(
