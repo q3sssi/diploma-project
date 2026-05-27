@@ -21,7 +21,7 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   opacity: 0.4;
 }
-.wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 100px; }
+.wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px 100px; }
 .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 52px; flex-wrap: wrap; gap: 16px; }
 .brand { display: flex; align-items: center; gap: 14px; }
 .brand-mark { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--blue), var(--purple)); font-size: 20px; box-shadow: 0 0 20px rgba(59,130,246,0.3); }
@@ -30,20 +30,16 @@ body::after {
 .brand-sub { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 2px; }
 .open-superset { display: flex; align-items: center; gap: 8px; padding: 9px 16px; background: var(--s2); border: 1px solid var(--border); border-radius: 10px; color: var(--text2); text-decoration: none; font-size: 12px; font-family: var(--mono); transition: all .2s; }
 .open-superset:hover { border-color: var(--blue); color: var(--blue2); }
+
+/* ── Вкладки ─────────────────────────────────────────────────── */
 .mode-bar { display: flex; background: var(--s1); border: 1px solid var(--border); border-radius: 14px; padding: 5px; margin-bottom: 36px; gap: 4px; flex-wrap: wrap; }
 .mode-btn { flex: 1; padding: 10px; border: none; background: transparent; cursor: pointer; border-radius: 10px; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--text2); transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 7px; white-space: nowrap; }
 .mode-btn.active { background: var(--s3); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,.4); }
 .mode-btn:hover:not(.active) { color: var(--text); }
 .wizard { display: none; }
 .wizard.active { display: block; }
-.step-track { display: flex; align-items: center; margin-bottom: 36px; position: relative; }
-.step-track::before { content: ''; position: absolute; top: 18px; left: 18px; right: 18px; height: 1px; background: var(--border); z-index: 0; }
-.step-node { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; position: relative; z-index: 1; }
-.step-circle { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--s1); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; font-family: var(--mono); color: var(--text3); transition: all .3s; }
-.step-circle.active { border-color: var(--blue); color: var(--blue); background: rgba(59,130,246,.1); box-shadow: 0 0 12px rgba(59,130,246,.2); }
-.step-circle.done { border-color: var(--green); color: var(--green); background: rgba(34,197,94,.1); }
-.step-label { font-size: 10px; color: var(--text3); font-family: var(--mono); text-align: center; }
-.step-label.active { color: var(--text2); }
+
+/* ── Cards ───────────────────────────────────────────────────── */
 .card { background: var(--s1); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 16px; position: relative; overflow: hidden; }
 .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(59,130,246,.2), transparent); }
 .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
@@ -53,30 +49,77 @@ body::after {
 .chip.purple { background: rgba(139,92,246,.12); color: #a78bfa; }
 .chip.red { background: rgba(239,68,68,.12); color: var(--red); }
 .chip.yellow { background: rgba(245,158,11,.12); color: var(--yellow); }
-.drops { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
-.drop { border: 2px dashed var(--border); border-radius: 12px; padding: 28px 16px; text-align: center; cursor: pointer; transition: all .2s; position: relative; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
-.drop input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-.drop:hover, .drop.over { border-color: var(--blue); background: rgba(59,130,246,.04); }
-.drop.loaded { border-color: var(--green); border-style: solid; }
-.drop-icon { font-size: 28px; }
-.drop-label { font-size: 12px; font-weight: 700; color: var(--text2); }
-.drop-hint { font-size: 10px; color: var(--text3); font-family: var(--mono); }
-.drop-file { font-size: 11px; color: var(--green); font-family: var(--mono); margin-top: 4px; word-break: break-all; }
-.drop-num { position: absolute; top: 10px; left: 10px; width: 22px; height: 22px; border-radius: 6px; background: var(--s3); border: 1px solid var(--border); font-size: 10px; font-weight: 700; color: var(--text2); font-family: var(--mono); display: flex; align-items: center; justify-content: center; }
+.chip.orange { background: rgba(249,115,22,.12); color: var(--orange); }
+
+/* ── Step track ──────────────────────────────────────────────── */
+.step-track { display: flex; align-items: center; margin-bottom: 36px; position: relative; }
+.step-track::before { content: ''; position: absolute; top: 18px; left: 18px; right: 18px; height: 1px; background: var(--border); z-index: 0; }
+.step-node { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; position: relative; z-index: 1; }
+.step-circle { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--s1); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; font-family: var(--mono); color: var(--text3); transition: all .3s; }
+.step-circle.active { border-color: var(--blue); color: var(--blue); background: rgba(59,130,246,.1); box-shadow: 0 0 12px rgba(59,130,246,.2); }
+.step-circle.done { border-color: var(--green); color: var(--green); background: rgba(34,197,94,.1); }
+.step-label { font-size: 10px; color: var(--text3); font-family: var(--mono); text-align: center; }
+.step-label.active { color: var(--text2); }
+
+/* ── Form elements ───────────────────────────────────────────── */
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
 .row.single { grid-template-columns: 1fr; }
 .row.triple { grid-template-columns: 2fr 1fr 1fr; }
 .field { display: flex; flex-direction: column; gap: 5px; }
 label { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .8px; font-family: var(--mono); }
-input[type=text], input[type=password], select { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: var(--mono); font-size: 12px; padding: 9px 11px; outline: none; transition: border-color .2s; width: 100%; }
+input[type=text], input[type=password], input[type=number], select {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); font-family: var(--mono); font-size: 12px; padding: 9px 11px;
+  outline: none; transition: border-color .2s; width: 100%;
+}
 input:focus, select:focus { border-color: var(--blue); }
 select option { background: var(--s2); }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 22px; border: none; border-radius: 10px; font-family: var(--sans); font-size: 13px; font-weight: 700; cursor: pointer; transition: all .2s; width: 100%; }
-.btn-primary { background: linear-gradient(135deg, var(--blue), var(--purple)); color: white; box-shadow: 0 4px 16px rgba(59,130,246,.25); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 22px; border: none; border-radius: 10px; font-family: var(--sans); font-size: 13px; font-weight: 700; cursor: pointer; transition: all .2s; }
+.btn-primary { background: linear-gradient(135deg, var(--blue), var(--purple)); color: white; box-shadow: 0 4px 16px rgba(59,130,246,.25); width: 100%; }
 .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(59,130,246,.35); }
 .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text2); }
 .btn-outline:hover { border-color: var(--blue); color: var(--blue2); }
+.btn-danger { background: transparent; border: 1px solid rgba(239,68,68,.4); color: var(--red); }
+.btn-danger:hover { background: rgba(239,68,68,.1); border-color: var(--red); }
+.btn-add { background: rgba(59,130,246,.1); border: 1px dashed rgba(59,130,246,.4); color: var(--blue2); font-size: 12px; padding: 10px 18px; border-radius: 10px; cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 600; }
+.btn-add:hover { background: rgba(59,130,246,.18); border-color: var(--blue); }
+
+/* ── Source card ─────────────────────────────────────────────── */
+.sources-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
+.source-card { background: var(--s2); border: 1px solid var(--border2); border-radius: 14px; padding: 18px; position: relative; }
+.source-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.source-card-label { font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.source-type-toggle { display: flex; gap: 6px; }
+.type-btn { padding: 5px 12px; border: 1px solid var(--border); border-radius: 7px; background: transparent; color: var(--text2); font-family: var(--mono); font-size: 10px; cursor: pointer; transition: all .2s; }
+.type-btn.active { border-color: var(--blue); color: var(--blue2); background: rgba(59,130,246,.1); }
+.type-btn:hover:not(.active) { border-color: var(--border2); color: var(--text); }
+.source-remove { width: 28px; height: 28px; border-radius: 7px; border: 1px solid rgba(239,68,68,.3); background: transparent; color: rgba(239,68,68,.6); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all .2s; }
+.source-remove:hover { border-color: var(--red); color: var(--red); background: rgba(239,68,68,.08); }
+
+/* ── File drop zone ──────────────────────────────────────────── */
+.drop { border: 2px dashed var(--border); border-radius: 12px; padding: 24px 16px; text-align: center; cursor: pointer; transition: all .2s; position: relative; min-height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.drop input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.drop:hover, .drop.over { border-color: var(--blue); background: rgba(59,130,246,.04); }
+.drop.loaded { border-color: var(--green); border-style: solid; }
+.drop-icon { font-size: 24px; }
+.drop-label { font-size: 12px; font-weight: 700; color: var(--text2); }
+.drop-hint { font-size: 10px; color: var(--text3); font-family: var(--mono); }
+.drop-file { font-size: 10px; color: var(--green); font-family: var(--mono); margin-top: 2px; word-break: break-all; }
+
+/* ── SQL form ────────────────────────────────────────────────── */
+.sql-form { display: none; }
+.sql-form.visible { display: block; }
+.file-form { display: block; }
+.file-form.hidden { display: none; }
+.sql-probe-row { display: flex; gap: 10px; align-items: flex-end; margin-top: 10px; }
+.sql-probe-row .btn-outline { white-space: nowrap; padding: 9px 14px; font-size: 11px; }
+.sql-table-select { margin-top: 10px; }
+
+/* ── Add source bar ──────────────────────────────────────────── */
+.add-source-bar { display: flex; align-items: center; justify-content: center; margin: 4px 0 16px; }
+
+/* ── Join config ─────────────────────────────────────────────── */
 .analysis-box { display: none; }
 .analysis-box.show { display: block; }
 .cols-grid { display: grid; grid-template-columns: 1fr 24px 1fr; gap: 8px; align-items: start; margin: 16px 0; }
@@ -97,6 +140,8 @@ select option { background: var(--s2); }
 .sql-box { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px; font-family: var(--mono); font-size: 11px; line-height: 1.7; color: #7dd3fc; white-space: pre-wrap; margin-top: 12px; display: none; }
 .sql-box.show { display: block; }
 .sql-kw { color: #c084fc; } .sql-name { color: #86efac; } .sql-op { color: #fbbf24; }
+
+/* ── Result panel ────────────────────────────────────────────── */
 .result-panel { display: none; background: var(--s1); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-top: 20px; }
 .result-panel.show { display: block; }
 .result-panel.success { border-color: rgba(34,197,94,.3); }
@@ -110,12 +155,27 @@ select option { background: var(--s2); }
 .stat-label { font-size: 10px; color: var(--text3); margin-top: 4px; font-family: var(--mono); text-transform: uppercase; }
 .result-link { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; background: linear-gradient(135deg, rgba(59,130,246,.15), rgba(139,92,246,.15)); border: 1px solid rgba(59,130,246,.3); border-radius: 10px; color: var(--blue2); text-decoration: none; font-weight: 600; font-size: 13px; transition: all .2s; }
 .result-link:hover { background: linear-gradient(135deg, rgba(59,130,246,.25), rgba(139,92,246,.25)); }
+
+/* ── Tables list ─────────────────────────────────────────────── */
 .tlist { display: grid; gap: 6px; }
 .tlist-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; font-family: var(--mono); font-size: 11px; }
-.tlist-name { color: var(--text); display: flex; align-items: center; gap: 8px; }
+.tlist-name { color: var(--text); display: flex; align-items: center; gap: 8px; flex: 1; }
+.tlist-meta { display: flex; align-items: center; gap: 10px; }
 .tlist-size { color: var(--text3); }
+.tlist-delete { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(239,68,68,.25); background: transparent; color: rgba(239,68,68,.5); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; transition: all .2s; flex-shrink: 0; }
+.tlist-delete:hover { border-color: var(--red); color: var(--red); background: rgba(239,68,68,.08); }
 
-/* ── История ── */
+/* ── Modal ───────────────────────────────────────────────────── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+.modal-overlay.show { display: flex; }
+.modal { background: var(--s1); border: 1px solid var(--border); border-radius: 16px; padding: 28px; max-width: 420px; width: 90%; }
+.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+.modal-body { font-size: 13px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
+.modal-body strong { color: var(--red); font-family: var(--mono); }
+.modal-actions { display: flex; gap: 10px; }
+.modal-actions .btn { flex: 1; }
+
+/* ── History ─────────────────────────────────────────────────── */
 .history-list { display: grid; gap: 10px; }
 .history-item { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; transition: border-color .2s; }
 .history-item:hover { border-color: var(--border2); }
@@ -128,13 +188,10 @@ select option { background: var(--s2); }
 .history-flow { font-family: var(--mono); font-size: 11px; color: var(--text2); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
 .history-tbl { background: var(--s2); border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; font-size: 11px; }
 .history-arrow { color: var(--text3); font-size: 14px; }
-
-/* Прогресс-бар совпадений */
 .match-bar-wrap { margin-top: 10px; }
 .match-bar-label { font-size: 10px; color: var(--text3); font-family: var(--mono); margin-bottom: 4px; display: flex; justify-content: space-between; }
 .match-bar-track { height: 4px; background: var(--s3); border-radius: 4px; overflow: hidden; }
 .match-bar-fill { height: 100%; border-radius: 4px; transition: width .4s ease; }
-
 .history-detail { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
 .history-detail.open { display: block; }
 .detail-section-title { font-size: 9px; color: var(--text3); font-family: var(--mono); text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 8px; }
@@ -149,13 +206,18 @@ select option { background: var(--s2); }
 .detail-cell-val.accent-red { color: var(--red); }
 .history-sql { background: var(--s1); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-family: var(--mono); font-size: 10px; line-height: 1.7; color: #7dd3fc; white-space: pre-wrap; max-height: 180px; overflow-y: auto; }
 
+/* ── Spinner ─────────────────────────────────────────────────── */
 .spin { width: 15px; height: 15px; border: 2px solid rgba(255,255,255,.2); border-top-color: #fff; border-radius: 50%; animation: rot .6s linear infinite; display: none; }
 @keyframes rot { to { transform: rotate(360deg); } }
 .loading .spin { display: inline-block; }
 .loading .btn-lbl { display: none; }
 
+/* ── Divider ─────────────────────────────────────────────────── */
+.divider { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+.divider-line { flex: 1; height: 1px; background: var(--border); }
+.divider-label { font-size: 10px; color: var(--text3); font-family: var(--mono); }
+
 @media (max-width: 600px) {
-  .drops { grid-template-columns: 1fr; }
   .row { grid-template-columns: 1fr; }
   .row.triple { grid-template-columns: 1fr; }
   .cols-grid { grid-template-columns: 1fr; }
@@ -172,7 +234,7 @@ select option { background: var(--s2); }
       <div class="brand-mark">⬡</div>
       <div>
         <div class="brand-name">Data<em>Bridge</em></div>
-        <div class="brand-sub">консолидация данных</div>
+        <div class="brand-sub">консолидация данных · v2</div>
       </div>
     </div>
     <a href="http://localhost:8088" target="_blank" class="open-superset">↗ Открыть Superset</a>
@@ -180,48 +242,46 @@ select option { background: var(--s2); }
 
   <div class="mode-bar">
     <button class="mode-btn active" onclick="setMode('consolidate')">Консолидация</button>
-    <button class="mode-btn" onclick="setMode('single')">Один файл</button>
     <button class="mode-btn" onclick="setMode('database')">Подключить БД</button>
     <button class="mode-btn" onclick="setMode('tables')">Таблицы</button>
     <button class="mode-btn" onclick="setMode('history')">История</button>
   </div>
 
-  <!-- ═══ CONSOLIDATION WIZARD ═══ -->
+  <!-- ═══ КОНСОЛИДАЦИЯ ═══ -->
   <div class="wizard active" id="wiz-consolidate">
+
     <div class="step-track">
-      <div class="step-node"><div class="step-circle active" id="sc1">1</div><div class="step-label active" id="sl1">Загрузка</div></div>
+      <div class="step-node"><div class="step-circle active" id="sc1">1</div><div class="step-label active" id="sl1">Источники</div></div>
       <div class="step-node"><div class="step-circle" id="sc2">2</div><div class="step-label" id="sl2">Анализ</div></div>
       <div class="step-node"><div class="step-circle" id="sc3">3</div><div class="step-label" id="sl3">Объединение</div></div>
       <div class="step-node"><div class="step-circle" id="sc4">4</div><div class="step-label" id="sl4">Superset</div></div>
     </div>
 
+    <!-- ── Шаг 1: Источники ── -->
     <div id="step-upload">
       <div class="card">
-        <div class="card-head"><div class="card-title">Загрузите два источника данных <span class="chip">Шаг 1</span></div></div>
-        <div class="drops">
-          <div class="drop" id="drop1" ondragover="dragOver(event,'drop1')" ondragleave="dragLeave('drop1')" ondrop="dropFile(event,'f1')">
-            <div class="drop-num">1</div>
-            <input type="file" id="f1" accept=".csv,.xlsx,.xls" onchange="fileChosen('f1','drop1','fn1')">
-            <div class="drop-icon"></div><div class="drop-label">Первый источник</div>
-            <div class="drop-hint">CSV или Excel</div><div class="drop-file" id="fn1"></div>
-          </div>
-          <div class="drop" id="drop2" ondragover="dragOver(event,'drop2')" ondragleave="dragLeave('drop2')" ondrop="dropFile(event,'f2')">
-            <div class="drop-num">2</div>
-            <input type="file" id="f2" accept=".csv,.xlsx,.xls" onchange="fileChosen('f2','drop2','fn2')">
-            <div class="drop-icon"></div><div class="drop-label">Второй источник</div>
-            <div class="drop-hint">CSV или Excel</div><div class="drop-file" id="fn2"></div>
-          </div>
+        <div class="card-head">
+          <div class="card-title">Источники данных <span class="chip">Шаг 1</span></div>
+          <span id="src-count-chip" class="chip">2 источника</span>
         </div>
-        <div class="row">
-          <div class="field"><label>Название таблицы 1 (необязательно)</label><input type="text" id="t1name" placeholder="по умолчанию — имя файла"></div>
-          <div class="field"><label>Название таблицы 2 (необязательно)</label><input type="text" id="t2name" placeholder="по умолчанию — имя файла"></div>
+
+        <div class="sources-list" id="sources-list">
+          <!-- Источники рендерятся JS -->
         </div>
+
+        <div class="add-source-bar">
+          <button class="btn-add" onclick="addSource()">
+            + Добавить источник
+          </button>
+        </div>
+
         <button class="btn btn-primary" id="analyze-btn" onclick="doAnalyze()">
           <div class="spin"></div><span class="btn-lbl">Загрузить и найти общие колонки</span>
         </button>
       </div>
     </div>
 
+    <!-- ── Шаг 2-3: Анализ + JOIN ── -->
     <div class="analysis-box" id="step-analyze">
       <div class="card">
         <div class="card-head">
@@ -241,7 +301,7 @@ select option { background: var(--s2); }
             <button class="join-type-btn" onclick="setJoin(this,'INNER')">INNER JOIN<br><span style="font-size:9px;color:var(--text3)">только совпадения</span></button>
             <button class="join-type-btn" onclick="setJoin(this,'FULL OUTER')">FULL JOIN<br><span style="font-size:9px;color:var(--text3)">все записи</span></button>
           </div>
-          <button class="btn btn-outline" style="margin-bottom:10px" onclick="toggleSQL()">Предпросмотр SQL</button>
+          <button class="btn btn-outline" style="margin-bottom:10px;width:auto;padding:8px 16px;font-size:11px" onclick="toggleSQL()">Предпросмотр SQL</button>
           <div class="sql-box" id="sql-preview"></div>
           <button class="btn btn-primary" id="exec-btn" onclick="doExecute()" style="margin-top:12px">
             <div class="spin"></div><span class="btn-lbl">Выполнить консолидацию</span>
@@ -252,27 +312,7 @@ select option { background: var(--s2); }
     </div>
   </div>
 
-  <!-- ═══ SINGLE FILE ═══ -->
-  <div class="wizard" id="wiz-single">
-    <div class="card">
-      <div class="card-title" style="margin-bottom:20px">Загрузить один файл <span class="chip">CSV / Excel</span></div>
-      <div class="drop" id="drop-s" style="margin-bottom:16px" ondragover="dragOver(event,'drop-s')" ondragleave="dragLeave('drop-s')" ondrop="dropFile(event,'fs')">
-        <input type="file" id="fs" accept=".csv,.xlsx,.xls" onchange="fileChosen('fs','drop-s','fns')">
-        <div class="drop-icon"></div><div class="drop-label">Перетащите или нажмите для выбора файла</div>
-        <div class="drop-hint">CSV, XLSX, XLS — UTF-8 и Windows-1251</div><div class="drop-file" id="fns"></div>
-      </div>
-      <div class="row">
-        <div class="field"><label>Название таблицы (необязательно)</label><input type="text" id="s-tname" placeholder="по умолчанию — имя файла"></div>
-        <div class="field"><label>Лист Excel</label><input type="text" id="s-sheet" placeholder="0" value="0"></div>
-      </div>
-      <button class="btn btn-primary" id="single-btn" onclick="doSingle()">
-        <div class="spin"></div><span class="btn-lbl">Загрузить в Superset</span>
-      </button>
-      <div class="result-panel" id="single-result" style="margin-top:16px"></div>
-    </div>
-  </div>
-
-  <!-- ═══ DATABASE ═══ -->
+  <!-- ═══ ПОДКЛЮЧИТЬ БД ═══ -->
   <div class="wizard" id="wiz-database">
     <div class="card">
       <div class="card-title" style="margin-bottom:20px">Подключить внешнюю базу данных <span class="chip purple">PostgreSQL / MySQL</span></div>
@@ -296,7 +336,7 @@ select option { background: var(--s2); }
     </div>
   </div>
 
-  <!-- ═══ TABLES ═══ -->
+  <!-- ═══ ТАБЛИЦЫ ═══ -->
   <div class="wizard" id="wiz-tables">
     <div class="card">
       <div class="card-head">
@@ -314,21 +354,66 @@ select option { background: var(--s2); }
         <div class="card-title">История консолидаций <span class="chip">метаданные схемы</span></div>
         <button class="btn-outline btn" style="width:auto;padding:7px 14px;font-size:11px" onclick="loadHistory()">↻ Обновить</button>
       </div>
-      <div id="history-container">
-        <div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>
-      </div>
+      <div id="history-container"><div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div></div>
     </div>
   </div>
 
 </div>
+
+<!-- ═══ MODAL: подтверждение удаления ═══ -->
+<div class="modal-overlay" id="delete-modal">
+  <div class="modal">
+    <div class="modal-title">Удалить таблицу?</div>
+    <div class="modal-body">
+      Вы уверены, что хотите удалить <strong id="delete-target-name">—</strong>?<br>
+      Это действие нельзя отменить. Все зависимые VIEW также будут удалены.
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeDeleteModal()">Отмена</button>
+      <button class="btn btn-danger" id="delete-confirm-btn" onclick="confirmDelete()">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: добавить SQL источник в консолидацию ═══ -->
+<div class="modal-overlay" id="sql-probe-modal">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-title">Подключить SQL источник</div>
+    <div style="margin-bottom:16px">
+      <div class="row">
+        <div class="field"><label>Тип БД</label><select id="sp-type" onchange="spAutoPort()"><option value="postgresql">PostgreSQL</option><option value="mysql">MySQL</option></select></div>
+        <div class="field"><label>Хост</label><input type="text" id="sp-host" placeholder="localhost"></div>
+      </div>
+      <div class="row triple">
+        <div class="field"><label>База данных</label><input type="text" id="sp-db" placeholder="mydb"></div>
+        <div class="field"><label>Порт</label><input type="text" id="sp-port" value="5432"></div>
+        <div class="field"><label></label></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Пользователь</label><input type="text" id="sp-user" placeholder="username"></div>
+        <div class="field"><label>Пароль</label><input type="password" id="sp-pass" placeholder="password"></div>
+      </div>
+      <button class="btn btn-outline" style="width:auto;padding:9px 16px;font-size:11px" id="sp-probe-btn" onclick="spProbe()">
+        <div class="spin"></div><span class="btn-lbl">Получить список таблиц</span>
+      </button>
+      <div id="sp-tables-block" style="display:none;margin-top:12px">
+        <div class="field"><label>Выберите таблицу</label><select id="sp-table"></select></div>
+        <div class="field" style="margin-top:8px"><label>Имя в системе (необязательно)</label><input type="text" id="sp-dest" placeholder="по умолчанию — имя таблицы"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeSqlModal()">Отмена</button>
+      <button class="btn btn-primary" id="sp-apply-btn" style="width:auto;flex:1" onclick="spApply()" disabled>Добавить источник</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const API = '';
-let joinType = 'LEFT';
-let analysisData = null;
-let sqlVisible = false;
 
+// ─────────────────────────────────────────── Режимы ──
 function setMode(m) {
-  const modes = ['consolidate','single','database','tables','history'];
+  const modes = ['consolidate','database','tables','history'];
   document.querySelectorAll('.mode-btn').forEach((b,i) => b.classList.toggle('active', modes[i] === m));
   document.querySelectorAll('.wizard').forEach(w => w.classList.remove('active'));
   document.getElementById('wiz-' + m).classList.add('active');
@@ -336,131 +421,336 @@ function setMode(m) {
   if (m === 'history') loadHistory();
 }
 
-function fileChosen(inputId, dropId, labelId) {
-  const f = document.getElementById(inputId).files[0];
-  if (!f) return;
-  document.getElementById(labelId).textContent = ' ' + f.name + ' (' + fmt(f.size) + ')';
-  document.getElementById(dropId).classList.add('loaded');
+// ─────────────────────────── Wizard: источники ───────
+
+let sources    = [];   // [{id, type:'file'|'sql', ...}]
+let nextId     = 1;
+let joinType   = 'LEFT';
+let analysisData = null;
+let sqlVisible = false;
+
+function makeSource(type = 'file') {
+  return { id: nextId++, type, file: null, filename: '', tableName: '', sheet: 0,
+           sqlMeta: null /* { db_type, host, port, database, username, password, table_name, dest_name } */ };
 }
+
+function initSources() {
+  sources = [makeSource('file'), makeSource('file')];
+  renderSources();
+}
+
+function renderSources() {
+  const list = document.getElementById('sources-list');
+  list.innerHTML = sources.map((src, i) => renderSourceCard(src, i)).join('');
+  document.getElementById('src-count-chip').textContent = `${sources.length} источника`;
+}
+
+function renderSourceCard(src, i) {
+  const canRemove = sources.length > 2;
+  const removeBtn = canRemove
+    ? `<button class="source-remove" onclick="removeSource(${src.id})" title="Удалить источник">✕</button>`
+    : '';
+
+  const typeToggle = `
+    <div class="source-type-toggle">
+      <button class="type-btn ${src.type==='file'?'active':''}" onclick="setSourceType(${src.id},'file')">Файл</button>
+      <button class="type-btn ${src.type==='sql'?'active':''}" onclick="setSourceType(${src.id},'sql')">SQL</button>
+    </div>`;
+
+  const fileForm = `
+    <div class="file-form ${src.type!=='file'?'hidden':''}" id="ff-${src.id}">
+      <div class="drop ${src.file?'loaded':''}" id="drop-${src.id}"
+           ondragover="dragOver(event,'drop-${src.id}')"
+           ondragleave="dragLeave('drop-${src.id}')"
+           ondrop="dropFile(event,${src.id})">
+        <input type="file" id="fi-${src.id}" accept=".csv,.xlsx,.xls" onchange="fileChosen(${src.id})">
+        <div class="drop-icon">${src.file ? '✅' : '📂'}</div>
+        <div class="drop-label">${src.file ? src.filename : 'Перетащите или выберите файл'}</div>
+        <div class="drop-hint">${src.file ? '' : 'CSV, XLSX, XLS'}</div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div class="field"><label>Имя таблицы (необязательно)</label><input type="text" id="tn-${src.id}" placeholder="по умолчанию — имя файла" value="${src.tableName}" onchange="sources.find(s=>s.id===${src.id}).tableName=this.value"></div>
+        <div class="field"><label>Лист Excel</label><input type="number" id="sh-${src.id}" placeholder="0" value="${src.sheet}" min="0" onchange="sources.find(s=>s.id===${src.id}).sheet=this.value"></div>
+      </div>
+    </div>`;
+
+  const sqlMeta = src.sqlMeta;
+  const sqlLabel = sqlMeta
+    ? `<span class="chip green">✓ ${sqlMeta.db_type}://${sqlMeta.host}/${sqlMeta.database}.${sqlMeta.table_name}</span>`
+    : `<span style="color:var(--text3);font-size:11px;font-family:var(--mono)">Источник не выбран</span>`;
+
+  const sqlForm = `
+    <div class="sql-form ${src.type!=='sql'?'':''}" id="sf-${src.id}" style="display:${src.type==='sql'?'block':'none'}">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px">
+        ${sqlLabel}
+        <button class="btn-add" onclick="openSqlModal(${src.id})" style="padding:7px 14px;font-size:11px">
+          ${sqlMeta ? '↻ Изменить' : '+ Выбрать таблицу из БД'}
+        </button>
+      </div>
+    </div>`;
+
+  return `
+    <div class="source-card" id="sc-${src.id}">
+      <div class="source-card-head">
+        <div class="source-card-label">
+          <span class="chip ${i===0?'':'green'}">${i===0?'Источник 1':'Источник '+(i+1)}</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          ${typeToggle}
+          ${removeBtn}
+        </div>
+      </div>
+      ${fileForm}
+      ${sqlForm}
+    </div>`;
+}
+
+function addSource() {
+  sources.push(makeSource('file'));
+  renderSources();
+}
+
+function removeSource(id) {
+  if (sources.length <= 2) return;
+  sources = sources.filter(s => s.id !== id);
+  renderSources();
+}
+
+function setSourceType(id, type) {
+  const src = sources.find(s => s.id === id);
+  if (!src) return;
+  src.type = type;
+  renderSources();
+}
+
+// ─── Файловые источники ───────────────────────────────
+
+function fileChosen(id) {
+  const input = document.getElementById(`fi-${id}`);
+  const file  = input?.files?.[0];
+  if (!file) return;
+  const src = sources.find(s => s.id === id);
+  src.file     = file;
+  src.filename = file.name;
+  renderSources();
+}
+
 function fmt(b) {
   if (b < 1024) return b + ' B';
   if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
   return (b/1048576).toFixed(1) + ' MB';
 }
-function dragOver(e, id) { e.preventDefault(); document.getElementById(id).classList.add('over'); }
-function dragLeave(id) { document.getElementById(id).classList.remove('over'); }
-function dropFile(e, inputId) {
+
+function dragOver(e, dropId) { e.preventDefault(); document.getElementById(dropId)?.classList.add('over'); }
+function dragLeave(dropId)   { document.getElementById(dropId)?.classList.remove('over'); }
+
+function dropFile(e, id) {
   e.preventDefault();
-  document.getElementById(inputId).files = e.dataTransfer.files;
-  const drop = e.currentTarget; drop.classList.remove('over');
-  fileChosen(inputId, drop.id, inputId.replace('f','fn'));
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  const src = sources.find(s => s.id === id);
+  src.file     = file;
+  src.filename = file.name;
+  renderSources();
 }
-function setStep(n) {
-  for (let i = 1; i <= 4; i++) {
-    const c = document.getElementById('sc'+i), l = document.getElementById('sl'+i);
-    if (i < n) { c.className='step-circle done'; c.textContent=''; }
-    else if (i===n) { c.className='step-circle active'; c.textContent=i; l.className='step-label active'; }
-    else { c.className='step-circle'; c.textContent=i; l.className='step-label'; }
+
+// ─── SQL источник: модалка ─────────────────────────────
+
+let _sqlTargetId = null;
+
+function openSqlModal(sourceId) {
+  _sqlTargetId = sourceId;
+  document.getElementById('sp-tables-block').style.display = 'none';
+  document.getElementById('sp-apply-btn').disabled = true;
+  document.getElementById('sql-probe-modal').classList.add('show');
+}
+function closeSqlModal() {
+  document.getElementById('sql-probe-modal').classList.remove('show');
+  _sqlTargetId = null;
+}
+function spAutoPort() {
+  document.getElementById('sp-port').value = document.getElementById('sp-type').value === 'postgresql' ? '5432' : '3306';
+}
+
+function setLoading(id, on) {
+  const b = document.getElementById(id);
+  if (!b) return;
+  b.classList.toggle('loading', on);
+  b.disabled = on;
+}
+
+async function spProbe() {
+  const fd = new FormData();
+  fd.append('db_type',  document.getElementById('sp-type').value);
+  fd.append('host',     document.getElementById('sp-host').value.trim());
+  fd.append('port',     document.getElementById('sp-port').value.trim());
+  fd.append('database', document.getElementById('sp-db').value.trim());
+  fd.append('username', document.getElementById('sp-user').value.trim());
+  fd.append('password', document.getElementById('sp-pass').value);
+
+  setLoading('sp-probe-btn', true);
+  try {
+    const r = await fetch(API + '/api/sql/probe', { method: 'POST', body: fd });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || JSON.stringify(d));
+
+    const sel = document.getElementById('sp-table');
+    sel.innerHTML = d.tables.map(t => `<option value="${t.name}">${t.schema}.${t.name}</option>`).join('');
+    document.getElementById('sp-tables-block').style.display = 'block';
+    document.getElementById('sp-apply-btn').disabled = false;
+  } catch(e) {
+    alert('Ошибка подключения: ' + e.message);
+  } finally {
+    setLoading('sp-probe-btn', false);
   }
 }
-function resetWizard() {
-  document.getElementById('step-upload').style.display='';
-  document.getElementById('step-analyze').classList.remove('show');
-  document.getElementById('cons-result').classList.remove('show');
-  setStep(1); analysisData=null;
+
+function spApply() {
+  if (_sqlTargetId === null) return;
+  const src = sources.find(s => s.id === _sqlTargetId);
+  if (!src) return;
+
+  src.sqlMeta = {
+    db_type:    document.getElementById('sp-type').value,
+    host:       document.getElementById('sp-host').value.trim(),
+    port:       document.getElementById('sp-port').value.trim(),
+    database:   document.getElementById('sp-db').value.trim(),
+    username:   document.getElementById('sp-user').value.trim(),
+    password:   document.getElementById('sp-pass').value,
+    table_name: document.getElementById('sp-table').value,
+    dest_name:  document.getElementById('sp-dest').value.trim(),
+  };
+
+  closeSqlModal();
+  renderSources();
 }
-function setJoin(btn, type) {
-  joinType=type;
-  document.querySelectorAll('.join-type-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  if (sqlVisible) updateSQLPreview();
-}
-function toggleSQL() {
-  sqlVisible=!sqlVisible;
-  const box=document.getElementById('sql-preview');
-  if (sqlVisible) { updateSQLPreview(); box.classList.add('show'); } else box.classList.remove('show');
-}
-function updateSQLPreview() {
-  if (!analysisData) return;
-  const jc=document.getElementById('join-col').value, rn=document.getElementById('result-name').value||'consolidated_data';
-  const t1=analysisData.table1.name, t2=analysisData.table2.name;
-  document.getElementById('sql-preview').innerHTML =
-    `<span class="sql-kw">CREATE OR REPLACE VIEW</span> <span class="sql-name">"${rn}"</span> <span class="sql-kw">AS</span>\n`+
-    `<span class="sql-kw">SELECT</span>\n    a.<span class="sql-name">*</span>, b.<span class="sql-name">*</span>\n`+
-    `<span class="sql-kw">FROM</span> <span class="sql-name">"${t1}"</span> a\n`+
-    `<span class="sql-kw">${joinType} JOIN</span> <span class="sql-name">"${t2}"</span> b\n`+
-    `    <span class="sql-kw">ON</span> a.<span class="sql-name">"${jc}"</span> <span class="sql-op">=</span> b.<span class="sql-name">"${jc}"</span>;`;
-}
-function setLoading(id, on) { const b=document.getElementById(id); b.classList.toggle('loading',on); b.disabled=on; }
+
+// ─── Анализ ───────────────────────────────────────────
 
 async function doAnalyze() {
-  const f1=document.getElementById('f1').files[0], f2=document.getElementById('f2').files[0];
-  if (!f1||!f2) { alert('Выберите оба файла'); return; }
-  setLoading('analyze-btn',true);
-  const fd=new FormData();
-  fd.append('file1',f1); fd.append('file2',f2);
-  fd.append('table1_name',document.getElementById('t1name').value);
-  fd.append('table2_name',document.getElementById('t2name').value);
+  // Валидация
+  for (let i = 0; i < sources.length; i++) {
+    const src = sources[i];
+    if (src.type === 'file' && !src.file) {
+      alert(`Источник ${i+1}: выберите файл`); return;
+    }
+    if (src.type === 'sql' && !src.sqlMeta) {
+      alert(`Источник ${i+1}: выберите таблицу из БД`); return;
+    }
+  }
+
+  setLoading('analyze-btn', true);
   try {
-    const r=await fetch(API+'/api/consolidate/analyze',{method:'POST',body:fd});
-    const d=await r.json(); if (!r.ok) throw new Error(d.detail||JSON.stringify(d));
-    analysisData=d; renderAnalysis(d);
-    document.getElementById('step-upload').style.display='none';
+    const fd = new FormData();
+
+    // Описание источников
+    const descriptors = sources.map((src, i) => {
+      if (src.type === 'file') {
+        return { type: 'file', file_key: `file_${i}`, table_name: src.tableName, sheet: src.sheet };
+      } else {
+        return { type: 'sql', ...src.sqlMeta };
+      }
+    });
+
+    fd.append('sources', JSON.stringify(descriptors));
+
+    // Файлы
+    sources.forEach((src, i) => {
+      if (src.type === 'file') {
+        fd.append(`file_${i}`, src.file);
+      }
+    });
+
+    const r = await fetch(API + '/api/consolidate/analyze-mixed', { method: 'POST', body: fd });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || JSON.stringify(d));
+
+    analysisData = d;
+    renderAnalysis(d);
+    document.getElementById('step-upload').style.display = 'none';
     document.getElementById('step-analyze').classList.add('show');
     setStep(2);
-  } catch(e) { alert('Ошибка: '+e.message); }
-  finally { setLoading('analyze-btn',false); }
+  } catch(e) {
+    alert('Ошибка: ' + e.message);
+  } finally {
+    setLoading('analyze-btn', false);
+  }
 }
 
 function renderAnalysis(d) {
-  const common=new Set(d.common_columns);
-  const makeList=(title,cols,chip)=>`<div class="col-list">
-    <div class="col-list-title">${title} <span class="chip ${chip}">${cols.length} кол.</span></div>
-    ${cols.map(c=>`<div class="col-item ${common.has(c)?'common':''}"><div class="col-dot ${common.has(c)?'common':''}"></div>${c}</div>`).join('')}
-  </div>`;
+  const common = new Set(d.common_columns);
+
+  const makeList = (title, cols) => `
+    <div class="col-list">
+      <div class="col-list-title">${title} <span class="chip">${cols.length} кол.</span></div>
+      ${cols.map(c => `<div class="col-item ${common.has(c)?'common':''}">
+        <div class="col-dot ${common.has(c)?'common':''}"></div>${c}
+      </div>`).join('')}
+    </div>`;
+
   document.getElementById('cols-grid').innerHTML =
-    makeList(d.table1.name, d.table1.columns,'') +
-    `<div class="connector-line">${d.common_columns.map(()=>'<div class="connector-dot"></div>').join('')}</div>` +
-    makeList(d.table2.name, d.table2.columns,'green');
-  const sel=document.getElementById('join-col'); sel.innerHTML='';
-  if (!d.common_columns.length) { sel.innerHTML='<option value="">— нет общих колонок —</option>'; }
-  else {
-    d.common_columns.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c+(c===d.suggested_join_column?'  рекомендуется':''); sel.appendChild(o); });
-    if (d.suggested_join_column) sel.value=d.suggested_join_column;
+    makeList(d.table1.name, d.table1.columns) +
+    `<div class="connector-line">${d.common_columns.map(() => '<div class="connector-dot"></div>').join('')}</div>` +
+    makeList(d.table2.name, d.table2.columns);
+
+  const sel = document.getElementById('join-col');
+  sel.innerHTML = '';
+  if (!d.common_columns.length) {
+    sel.innerHTML = '<option value="">— нет общих колонок —</option>';
+  } else {
+    d.common_columns.forEach(c => {
+      const o = document.createElement('option');
+      o.value = c;
+      o.textContent = c + (c === d.suggested_join_column ? '  ✦ рекомендуется' : '');
+      sel.appendChild(o);
+    });
+    if (d.suggested_join_column) sel.value = d.suggested_join_column;
   }
-  document.getElementById('result-name').value=`consolidated_${d.table1.name}_${d.table2.name}`.slice(0,50);
+
+  document.getElementById('result-name').value =
+    `consolidated_${d.table1.name}_${d.table2.name}`.slice(0, 50);
 }
+
+// ─── Execute ──────────────────────────────────────────
 
 async function doExecute() {
   if (!analysisData) return;
-  const jc=document.getElementById('join-col').value;
+  const jc = document.getElementById('join-col').value;
   if (!jc) { alert('Нет общих колонок'); return; }
-  setLoading('exec-btn',true);
+  setLoading('exec-btn', true);
+
   const body = {
-    table1: analysisData.table1.name,
-    table2: analysisData.table2.name,
-    join_column: jc,
-    join_type: joinType,
-    result_name: document.getElementById('result-name').value || 'consolidated_data',
+    table1:           analysisData.table1.name,
+    table2:           analysisData.table2.name,
+    join_column:      jc,
+    join_type:        joinType,
+    result_name:      document.getElementById('result-name').value || 'consolidated_data',
     source1_filename: analysisData.table1.filename,
     source2_filename: analysisData.table2.filename,
-};
-try {
-    const r=await fetch(API+'/api/consolidate/execute',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    const d=await r.json(); if (!r.ok) throw new Error(d.detail||JSON.stringify(d));
-    setStep(4); showConsResult(true,d);
-  } catch(e) { showConsResult(false,{error:e.message}); }
-  finally { setLoading('exec-btn',false); }
+  };
+  try {
+    const r = await fetch(API + '/api/consolidate/execute', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || JSON.stringify(d));
+    setStep(4);
+    showConsResult(true, d);
+  } catch(e) {
+    showConsResult(false, { error: e.message });
+  } finally {
+    setLoading('exec-btn', false);
+  }
 }
 
-function showConsResult(ok,d) {
-  const panel=document.getElementById('cons-result');
-  panel.className='result-panel show '+(ok?'success':'error');
+function showConsResult(ok, d) {
+  const panel = document.getElementById('cons-result');
+  panel.className = 'result-panel show ' + (ok ? 'success' : 'error');
   if (ok) {
-    const matchStr = d.match_percent!=null ? `${d.match_percent}%` : '—';
-    const durStr = d.duration_ms!=null ? `${d.duration_ms} мс` : '—';
-    panel.innerHTML=`
-      <div class="result-title success"> Консолидация выполнена успешно</div>
+    const matchStr = d.match_percent != null ? `${d.match_percent}%` : '—';
+    const durStr   = d.duration_ms   != null ? `${d.duration_ms} мс` : '—';
+    panel.innerHTML = `
+      <div class="result-title success">✓ Консолидация выполнена</div>
       <div class="result-stats">
         <div class="stat"><div class="stat-val">${d.rows.toLocaleString()}</div><div class="stat-label">строк</div></div>
         <div class="stat"><div class="stat-val">${matchStr}</div><div class="stat-label">совпадений</div></div>
@@ -469,55 +759,178 @@ function showConsResult(ok,d) {
       <div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px">
         VIEW: <b style="color:var(--green)">${d.result_view}</b> — ${d.superset}
       </div>
-      <a href="http://localhost:8088/tablemodelview/list/" target="_blank" class="result-link">Открыть Datasets в Superset</a>`;
+      <a href="http://localhost:8088/tablemodelview/list/" target="_blank" class="result-link">Открыть Datasets в Superset ↗</a>`;
   } else {
-    panel.innerHTML=`<div class="result-title error"> Ошибка</div><div style="font-family:var(--mono);font-size:12px;color:var(--text2)">${d.error}</div>`;
+    panel.innerHTML = `<div class="result-title error">✗ Ошибка</div><div style="font-family:var(--mono);font-size:12px;color:var(--text2)">${d.error}</div>`;
   }
 }
 
-async function doSingle() {
-  const f=document.getElementById('fs').files[0]; if (!f) { alert('Выберите файл'); return; }
-  setLoading('single-btn',true);
-  const fd=new FormData(); fd.append('file',f); fd.append('table_name',document.getElementById('s-tname').value); fd.append('sheet',document.getElementById('s-sheet').value);
+// ─── Join / SQL preview ───────────────────────────────
+
+function setJoin(btn, type) {
+  joinType = type;
+  document.querySelectorAll('.join-type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (sqlVisible) updateSQLPreview();
+}
+
+function toggleSQL() {
+  sqlVisible = !sqlVisible;
+  const box = document.getElementById('sql-preview');
+  if (sqlVisible) { updateSQLPreview(); box.classList.add('show'); }
+  else box.classList.remove('show');
+}
+
+function updateSQLPreview() {
+  if (!analysisData) return;
+  const jc = document.getElementById('join-col').value;
+  const rn = document.getElementById('result-name').value || 'consolidated_data';
+  const t1 = analysisData.table1.name, t2 = analysisData.table2.name;
+  document.getElementById('sql-preview').innerHTML =
+    `<span class="sql-kw">CREATE OR REPLACE VIEW</span> <span class="sql-name">"${rn}"</span> <span class="sql-kw">AS</span>\n` +
+    `<span class="sql-kw">SELECT</span>\n    a.<span class="sql-name">*</span>, b.<span class="sql-name">*</span>\n` +
+    `<span class="sql-kw">FROM</span> <span class="sql-name">"${t1}"</span> a\n` +
+    `<span class="sql-kw">${joinType} JOIN</span> <span class="sql-name">"${t2}"</span> b\n` +
+    `    <span class="sql-kw">ON</span> a.<span class="sql-name">"${jc}"</span> <span class="sql-op">=</span> b.<span class="sql-name">"${jc}"</span>;`;
+}
+
+// ─── Steps ────────────────────────────────────────────
+
+function setStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    const c = document.getElementById(`sc${i}`), l = document.getElementById(`sl${i}`);
+    if (i < n)      { c.className = 'step-circle done'; c.textContent = '✓'; }
+    else if (i===n) { c.className = 'step-circle active'; c.textContent = i; l.className = 'step-label active'; }
+    else            { c.className = 'step-circle'; c.textContent = i; l.className = 'step-label'; }
+  }
+}
+
+function resetWizard() {
+  document.getElementById('step-upload').style.display = '';
+  document.getElementById('step-analyze').classList.remove('show');
+  document.getElementById('cons-result').classList.remove('show');
+  setStep(1);
+  analysisData = null;
+}
+
+// ─── Таблицы + удаление ───────────────────────────────
+
+async function loadTables() {
+  const el = document.getElementById('tlist');
+  el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>';
   try {
-    const r=await fetch(API+'/api/upload',{method:'POST',body:fd}); const d=await r.json(); const p=document.getElementById('single-result');
-    if (r.ok) { p.className='result-panel show success'; p.innerHTML=`<div class="result-title success"> Загружено</div><div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px">Таблица: <b>${d.table}</b> · ${d.rows} строк · ${d.columns.length} колонок</div><a href="http://localhost:8088/tablemodelview/list/" target="_blank" class="result-link">Открыть в Superset</a>`; }
-    else { p.className='result-panel show error'; p.innerHTML=`<div class="result-title error"> Ошибка</div><div style="font-family:var(--mono);font-size:11px">${d.detail}</div>`; }
-  } catch(e) { const p=document.getElementById('single-result'); p.className='result-panel show error'; p.innerHTML=`<div class="result-title error"> Ошибка соединения</div><div style="font-family:var(--mono);font-size:11px">${e.message}</div>`; }
-  finally { setLoading('single-btn',false); }
+    const r = await fetch(API + '/api/tables');
+    const d = await r.json();
+    if (!d.tables.length) {
+      el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Таблиц пока нет</div>';
+      return;
+    }
+    el.innerHTML = d.tables.map(t => `
+      <div class="tlist-item" id="trow-${t.name}">
+        <span class="tlist-name">
+          <span style="color:var(--text3)">${t.type==='view'?'[view]':'[table]'}</span>
+          ${t.name}
+        </span>
+        <div class="tlist-meta">
+          <span class="tlist-size">${t.size}</span>
+          <button class="tlist-delete" onclick="openDeleteModal('${t.name}')" title="Удалить">🗑</button>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = `<div style="color:var(--red);font-family:var(--mono);font-size:11px">Ошибка: ${e.message}</div>`;
+  }
+}
+
+let _deleteTarget = null;
+
+function openDeleteModal(name) {
+  _deleteTarget = name;
+  document.getElementById('delete-target-name').textContent = name;
+  document.getElementById('delete-modal').classList.add('show');
+}
+function closeDeleteModal() {
+  document.getElementById('delete-modal').classList.remove('show');
+  _deleteTarget = null;
+}
+
+async function confirmDelete() {
+  if (!_deleteTarget) return;
+  const btn = document.getElementById('delete-confirm-btn');
+  btn.disabled = true;
+  btn.textContent = 'Удаление...';
+  try {
+    const r = await fetch(API + `/api/tables/${encodeURIComponent(_deleteTarget)}`, { method: 'DELETE' });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || JSON.stringify(d));
+    // Убираем строку без перезагрузки
+    const row = document.getElementById(`trow-${_deleteTarget}`);
+    if (row) { row.style.opacity = '0'; row.style.transition = 'opacity .3s'; setTimeout(() => row.remove(), 300); }
+  } catch(e) {
+    alert('Ошибка удаления: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Удалить';
+    closeDeleteModal();
+  }
+}
+
+// ─── Подключить внешнюю БД ────────────────────────────
+
+function autoPort() {
+  document.getElementById('db-port').value = document.getElementById('db-type').value === 'postgresql' ? '5432' : '3306';
 }
 
 async function doConnect() {
-  if (['db-host','db-port','db-dbname','db-user'].some(f=>!document.getElementById(f).value.trim())) { alert('Заполните все обязательные поля'); return; }
-  setLoading('db-btn',true);
-  const fd=new FormData(); ['db-type','db-host','db-port','db-dbname','db-user','db-pass','db-cname'].forEach(id=>{ const map={'db-type':'db_type','db-host':'host','db-port':'port','db-dbname':'database','db-user':'username','db-pass':'password','db-cname':'connection_name'}; fd.append(map[id],document.getElementById(id).value); });
+  if (['db-host','db-port','db-dbname','db-user'].some(f => !document.getElementById(f).value.trim())) {
+    alert('Заполните все обязательные поля'); return;
+  }
+  setLoading('db-btn', true);
+  const fd = new FormData();
+  fd.append('db_type',         document.getElementById('db-type').value);
+  fd.append('host',            document.getElementById('db-host').value.trim());
+  fd.append('port',            document.getElementById('db-port').value.trim());
+  fd.append('database',        document.getElementById('db-dbname').value.trim());
+  fd.append('username',        document.getElementById('db-user').value.trim());
+  fd.append('password',        document.getElementById('db-pass').value);
+  fd.append('connection_name', document.getElementById('db-cname').value.trim());
   try {
-    const r=await fetch(API+'/api/connect/database',{method:'POST',body:fd}); const d=await r.json(); const p=document.getElementById('db-result');
-    if (r.ok) { p.className='result-panel show success'; p.innerHTML=`<div class="result-title success"> Подключено</div><div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px">${d.connection_name} — ${d.superset}</div><a href="http://localhost:8088/databaseview/list/" target="_blank" class="result-link">↗ Открыть в Superset</a>`; }
-    else { p.className='result-panel show error'; p.innerHTML=`<div class="result-title error"> Ошибка</div><div style="font-family:var(--mono);font-size:11px">${d.detail}</div>`; }
-  } catch(e) { const p=document.getElementById('db-result'); p.className='result-panel show error'; p.innerHTML=`<div class="result-title error"> Ошибка соединения</div><div style="font-family:var(--mono);font-size:11px">${e.message}</div>`; }
-  finally { setLoading('db-btn',false); }
+    const r = await fetch(API + '/api/connect/database', { method: 'POST', body: fd });
+    const d = await r.json();
+    const p = document.getElementById('db-result');
+    if (r.ok) {
+      p.className = 'result-panel show success';
+      p.innerHTML = `<div class="result-title success">✓ Подключено</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px">${d.connection_name} — ${d.superset}</div>
+        <a href="http://localhost:8088/databaseview/list/" target="_blank" class="result-link">Открыть в Superset ↗</a>`;
+    } else {
+      p.className = 'result-panel show error';
+      p.innerHTML = `<div class="result-title error">✗ Ошибка</div><div style="font-family:var(--mono);font-size:11px">${d.detail}</div>`;
+    }
+  } catch(e) {
+    const p = document.getElementById('db-result');
+    p.className = 'result-panel show error';
+    p.innerHTML = `<div class="result-title error">✗ Ошибка соединения</div><div style="font-family:var(--mono);font-size:11px">${e.message}</div>`;
+  } finally {
+    setLoading('db-btn', false);
+  }
 }
 
-async function loadTables() {
-  const el=document.getElementById('tlist'); el.innerHTML='<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>';
-  try {
-    const r=await fetch(API+'/api/tables'); const d=await r.json();
-    if (!d.tables.length) { el.innerHTML='<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Таблиц пока нет</div>'; return; }
-    el.innerHTML=d.tables.map(t=>`<div class="tlist-item"><span class="tlist-name"><span style="color:var(--text3)">${t.type==='view'?'[view]':'[table]'}</span> ${t.name}</span><span class="tlist-size">${t.size}</span></div>`).join('');
-  } catch(e) { el.innerHTML=`<div style="color:var(--red);font-family:var(--mono);font-size:11px">Ошибка: ${e.message}</div>`; }
-}
+// ─── История ──────────────────────────────────────────
 
-// ── История ──────────────────────────────────────────
 async function loadHistory() {
-  const el=document.getElementById('history-container');
-  el.innerHTML='<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>';
+  const el = document.getElementById('history-container');
+  el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px">Загрузка...</div>';
   try {
-    const r=await fetch(API+'/api/consolidation/history?limit=50');
-    const d=await r.json();
-    if (!d.history.length) { el.innerHTML='<div style="color:var(--text3);font-family:var(--mono);font-size:12px;padding:8px 0">Операций консолидации ещё не было</div>'; return; }
-    el.innerHTML='<div class="history-list">'+d.history.map((rec,i)=>renderHistoryItem(rec,i)).join('')+'</div>';
-  } catch(e) { el.innerHTML=`<div style="color:var(--red);font-family:var(--mono);font-size:11px">Ошибка: ${e.message}</div>`; }
+    const r = await fetch(API + '/api/consolidation/history?limit=50');
+    const d = await r.json();
+    if (!d.history.length) {
+      el.innerHTML = '<div style="color:var(--text3);font-family:var(--mono);font-size:12px;padding:8px 0">Операций консолидации ещё не было</div>';
+      return;
+    }
+    el.innerHTML = '<div class="history-list">' + d.history.map((rec,i) => renderHistoryItem(rec,i)).join('') + '</div>';
+  } catch(e) {
+    el.innerHTML = `<div style="color:var(--red);font-family:var(--mono);font-size:11px">Ошибка: ${e.message}</div>`;
+  }
 }
 
 function matchColor(pct) {
@@ -528,23 +941,20 @@ function matchColor(pct) {
 }
 
 function renderHistoryItem(rec, i) {
-  const dt=new Date(rec.created_at);
-  const when=dt.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  const isOk=rec.status==='success';
-  const pct=rec.match_percent!=null ? parseFloat(rec.match_percent) : null;
-  const pctColor=matchColor(pct);
-  const sqlEsc=(rec.sql_text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const dt   = new Date(rec.created_at);
+  const when = dt.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const isOk = rec.status === 'success';
+  const pct  = rec.match_percent != null ? parseFloat(rec.match_percent) : null;
+  const pctColor = matchColor(pct);
+  const sqlEsc = (rec.sql_text||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-  // Прогресс-бар совпадений
-  const matchBar = pct!=null ? `
+  const matchBar = pct != null ? `
     <div class="match-bar-wrap">
       <div class="match-bar-label">
         <span style="color:var(--text3)">Совпадений JOIN</span>
         <span style="color:${pctColor};font-weight:700">${pct}%</span>
       </div>
-      <div class="match-bar-track">
-        <div class="match-bar-fill" style="width:${pct}%;background:${pctColor}"></div>
-      </div>
+      <div class="match-bar-track"><div class="match-bar-fill" style="width:${pct}%;background:${pctColor}"></div></div>
     </div>` : '';
 
   return `
@@ -561,84 +971,58 @@ function renderHistoryItem(rec, i) {
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-        <span class="chip ${isOk?'green':'red'}">${isOk?' успех':' ошибка'}</span>
+        <span class="chip ${isOk?'green':'red'}">${isOk?'✓ успех':'✗ ошибка'}</span>
         <span class="history-when">${when}</span>
       </div>
     </div>
-
     <div class="history-meta">
       <span class="chip">${rec.join_type} JOIN</span>
       <span style="font-family:var(--mono);font-size:10px;color:var(--text2)">по: <b>${rec.join_column}</b></span>
       ${rec.row_count!=null?`<span style="font-family:var(--mono);font-size:10px;color:var(--text3)">${rec.row_count.toLocaleString()} строк</span>`:''}
       ${rec.duration_ms!=null?`<span style="font-family:var(--mono);font-size:10px;color:var(--text3)">${rec.duration_ms} мс</span>`:''}
-      ${rec.result_size_pretty?`<span style="font-family:var(--mono);font-size:10px;color:var(--text3)">${rec.result_size_pretty}</span>`:''}
     </div>
-
     ${matchBar}
-
     <div class="history-detail" id="hd-${i}">
-
       <div class="detail-section-title">Источники и назначение</div>
       <div class="history-detail-grid">
-        <div class="detail-cell"><div class="detail-cell-label">Откуда — таблица 1</div><div class="detail-cell-val accent-blue">${rec.source1_filename || rec.source_table_1}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Откуда — таблица 2</div><div class="detail-cell-val accent-blue">${rec.source2_filename || rec.source_table_2}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Куда (результат)</div><div class="detail-cell-val accent-green">${rec.result_schema}.${rec.result_view}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Когда выполнено</div><div class="detail-cell-val">${when}</div></div>
+        <div class="detail-cell"><div class="detail-cell-label">Источник 1</div><div class="detail-cell-val accent-blue">${rec.source1_filename||rec.source_table_1}</div></div>
+        <div class="detail-cell"><div class="detail-cell-label">Источник 2</div><div class="detail-cell-val accent-blue">${rec.source2_filename||rec.source_table_2}</div></div>
+        <div class="detail-cell"><div class="detail-cell-label">Результат</div><div class="detail-cell-val accent-green">${rec.result_schema}.${rec.result_view}</div></div>
+        <div class="detail-cell"><div class="detail-cell-label">Выполнено</div><div class="detail-cell-val">${when}</div></div>
       </div>
-
       <div class="detail-section-title">Параметры объединения</div>
       <div class="history-detail-grid">
         <div class="detail-cell"><div class="detail-cell-label">Поле JOIN</div><div class="detail-cell-val accent-yellow">${rec.join_column}</div></div>
         <div class="detail-cell"><div class="detail-cell-label">Тип JOIN</div><div class="detail-cell-val">${rec.join_type}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Колонок в результате</div><div class="detail-cell-val">${rec.columns_count??'—'}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Строк в результате</div><div class="detail-cell-val">${rec.row_count!=null?rec.row_count.toLocaleString():'—'}</div></div>
+        <div class="detail-cell"><div class="detail-cell-label">Колонок</div><div class="detail-cell-val">${rec.columns_count??'—'}</div></div>
+        <div class="detail-cell"><div class="detail-cell-label">Строк</div><div class="detail-cell-val">${rec.row_count!=null?rec.row_count.toLocaleString():'—'}</div></div>
       </div>
-
-      <div class="detail-section-title">Строки исходных таблиц</div>
+      <div class="detail-section-title">Совпадения</div>
       <div class="history-detail-grid">
-        <div class="detail-cell"><div class="detail-cell-label">Строк в таблице 1</div><div class="detail-cell-val">${rec.source1_row_count!=null?rec.source1_row_count.toLocaleString():'—'}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Строк в таблице 2</div><div class="detail-cell-val">${rec.source2_row_count!=null?rec.source2_row_count.toLocaleString():'—'}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Совпало строк</div><div class="detail-cell-val" style="color:${pctColor}">${rec.matched_row_count!=null?rec.matched_row_count.toLocaleString():'—'}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Процент совпадений</div><div class="detail-cell-val" style="color:${pctColor}">${pct!=null?pct+'%':'—'}</div></div>
+        <div class="detail-cell"><div class="detail-cell-label">Строк в источнике 1</div><div class="detail-cell-val">${rec.source1_row_count!=null?rec.source1_row_count.toLocaleString():'—'}</div></div>
+        <div class="detail-cell"><div class="detail-cell-label">Строк в источнике 2</div><div class="detail-cell-val">${rec.source2_row_count!=null?rec.source2_row_count.toLocaleString():'—'}</div></div>
+        <div class="detail-cell"><div class="detail-cell-label">Совпало</div><div class="detail-cell-val" style="color:${pctColor}">${rec.matched_row_count!=null?rec.matched_row_count.toLocaleString():'—'}</div></div>
+        <div class="detail-cell"><div class="detail-cell-label">Процент</div><div class="detail-cell-val" style="color:${pctColor}">${pct!=null?pct+'%':'—'}</div></div>
       </div>
-
-      <div class="detail-section-title">Размер и производительность</div>
-      <div class="history-detail-grid">
-        <div class="detail-cell"><div class="detail-cell-label">Размер VIEW</div><div class="detail-cell-val">${rec.result_size_pretty??'—'}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Размер (байты)</div><div class="detail-cell-val">${rec.result_size_bytes!=null?rec.result_size_bytes.toLocaleString():'—'}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Время выполнения</div><div class="detail-cell-val accent-yellow">${rec.duration_ms!=null?rec.duration_ms+' мс':'—'}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Superset</div><div class="detail-cell-val" style="font-size:10px">${rec.superset_status??'—'}</div></div>
-      </div>
-
-      <div class="detail-section-title">Инициатор</div>
-      <div class="history-detail-grid">
-        <div class="detail-cell"><div class="detail-cell-label">IP-адрес</div><div class="detail-cell-val">${rec.initiated_by_ip??'—'}</div></div>
-        <div class="detail-cell"><div class="detail-cell-label">Host</div><div class="detail-cell-val" style="font-size:10px">${rec.initiated_by_host??'—'}</div></div>
-      </div>
-
       ${rec.error_message?`
-      <div class="detail-section-title" style="color:var(--red)"> Ошибка</div>
+      <div class="detail-section-title" style="color:var(--red)">Ошибка</div>
       <div class="history-detail-grid">
         <div class="detail-cell" style="grid-column:1/-1;border-color:rgba(239,68,68,.3)">
           <div class="detail-cell-label" style="color:var(--red)">Сообщение</div>
           <div class="detail-cell-val accent-red">${rec.error_message}</div>
         </div>
       </div>`:''}
-
-      ${sqlEsc?`
-      <div class="detail-section-title">SQL (аудит)</div>
-      <div class="history-sql">${sqlEsc}</div>`:''}
+      ${sqlEsc?`<div class="detail-section-title">SQL</div><div class="history-sql">${sqlEsc}</div>`:''}
     </div>
   </div>`;
 }
 
 function toggleHistoryDetail(i) {
-  document.getElementById('hd-'+i).classList.toggle('open');
+  document.getElementById(`hd-${i}`)?.classList.toggle('open');
 }
 
-function autoPort() {
-  document.getElementById('db-port').value = document.getElementById('db-type').value==='postgresql'?'5432':'3306';
-}
+// ─── Init ─────────────────────────────────────────────
+initSources();
 </script>
 </body>
 </html>
